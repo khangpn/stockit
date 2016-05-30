@@ -1,0 +1,22 @@
+var settings = {
+  development: {
+    database : "stock",
+    username : "stock",
+    password : "stock",
+    options  : {
+      dialect : "postgresql",
+      host     : "127.0.0.1"
+    }
+  },
+  production: {
+    database : "stock",
+    username : "stock",
+    password : "stock",
+    options  : {
+      dialect : "postgresql",
+      host     : "127.0.0.1"
+    }
+  }
+};
+
+module.exports = settings;

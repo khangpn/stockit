@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Project Info
+    div.panel-body
+      div.table-responsive
+        table.table.table-hover
+          thead
+            tr
+              th ID
+              th Account name
+              th Fullname
+              th Email
+          tbody
+            for account in accounts
+              - var detail = account.account_detail;
+              tr
+                td=account.id
+                td
+                  a(href='/accounts/' + account.id)=account.name
+                td=detail ? detail.fullname : ''
+                td=detail ? detail.email : ''

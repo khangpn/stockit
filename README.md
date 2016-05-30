@@ -1,2 +1,4 @@
-# stock_api
-The API for the stockit mobile app
+# Stock IT
+
+Web platform warehouse management.
+Later, this will become api for a mobile app.
