@@ -4,7 +4,7 @@ var crypto = require('crypto');
 
 //--------------- Unauthenticated section ------------------
 router.get('/', function(req, res, next) {
-  res.render("../index", {title: 'HotPot'});
+  res.render("../index", {title: 'StockIt'});
 });
 
 router.get('/login', function(req, res, next) {
