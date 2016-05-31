@@ -16,13 +16,13 @@ block content
               placeholder='Fullname',
               value=detail ? detail.fullname : '') 
         div.form-group
-          label.col-sm-2.control-label(for='AccountDetail_email') Email
+          label.col-sm-2.control-label(for='AccountDetail_note') Note
           div.col-sm-10
-            input.form-control(type='text', 
-              name='email', 
-              id='AccountDetail_email',
-              placeholder='Email',
-              value=detail ? detail.email : '')
+            textarea.form-control( 
+              name='note', 
+              id='AccountDetail_note',
+              placeholder='Note')
+              =detail ? detail.note : ''
         div.form-group
           div.col-sm-offset-2.col-sm-10
             input.btn.btn-default(type='submit' value='Submit')

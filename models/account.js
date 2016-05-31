@@ -12,17 +12,16 @@ module.exports = function(sequelize, DataTypes) {
   }
 
   var Account = sequelize.define("account", {
-      username: { 
+      email: { 
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         validate: {
-          notEmpty: {
-            msg: "Username is required"
+          isEmail: {
+            msg: "Email format is invalid"
           },
-          len: {
-            args: [8, 128],
-            msg: "Username should be from 8 to 128 characters length"
+          notEmpty: {
+            msg: "Email is required"
           }
         }
       },

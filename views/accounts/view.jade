@@ -6,9 +6,9 @@ block content
       h3.panel-title Profile
     div.panel-body
       div.row
-        label.col-md-1 Username:
+        label.col-md-1 Email:
         div.col-md-11
-          = account.name
+          = account.email
       if account.account_detail
         - var detail = account.account_detail
         div.row
@@ -16,9 +16,9 @@ block content
           div.col-md-11
             = detail.fullname
         div.row
-          label.col-md-1 Email:
+          label.col-md-1 Note:
           div.col-md-11
-            = detail.email
+            = detail.note
       if is_owner
         div.row
           div.col-sm-3
@@ -29,13 +29,9 @@ block content
             a(href="/accounts/update_detail",
               role="button")
               | Edit Profile
-        div.row
-          div.col-sm-1
-            a.btn.btn-danger(href="/accounts/delete/" + account.id,
-              role="button")
-              | Delete Account
-  div.panel.panel-default
-    div.panel-heading
-      h3.panel-title Project Profiles
-    div.panel-body
-      include ./_projects_list.jade
+        if isAdmin
+          div.row
+            div.col-sm-1
+              a.btn.btn-danger(href="/accounts/delete/" + account.id,
+                role="button")
+                | Delete Account

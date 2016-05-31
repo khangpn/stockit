@@ -1,34 +1,110 @@
 var express = require('express');
 var router = express.Router();
 
-//------------------- Admin Section ----------------------
+//------------------- Unauthorized Section ----------------------
 router.get('/create', function(req, res, next) {
-  if (!res.locals.isAdmin) {
-    var err = new Error('You are not permitted to access this!');
-    err.status = 401;
-    return next(err);
+  if (res.locals.authenticated) {
+    return res.redirect("/");
   }
+
   res.render("create");
 });
 
 router.post('/create', function(req, res, next) {
+  if (res.locals.authenticated) {
+    return res.redirect("/");
+  }
+
+  if (!req.body) return next(new Error('Cannot get the req.body'));
+
+  var data = req.body;
+  delete(data['is_admin']);
+  var Account = req.models.account;
+
+  Account.create(data)
+    .then(function(account){
+      // Handle logging in
+      (function login() {
+        var Token = req.models.token;
+        var token = Token.generateToken();
+        var origin_name = token.name;
+        token.account_id = account.id;
+        token.save()
+          .then(function(tk){
+            if (data.remember === 'on') {
+              res.cookie('token', origin_name, {
+                httpOnly: true,
+                maxAge: 1209600000
+              });
+            } else {
+              res.cookie('token', origin_name, {
+                httpOnly: true
+              });
+            }
+            return res.redirect('/accounts/' + account.id);
+            
+          }, function(error) {
+            return next(error);
+          });
+      })();
+    }, function(error){
+      return res.render("create", {
+        error: error
+      });
+    });
+});
+//--------------------------------------------------------
+
+//------------------- Admin Section ----------------------
+router.get('/create_admin', function(req, res, next) {
   if (!res.locals.isAdmin) {
     var err = new Error('You are not permitted to access this!');
     err.status = 401;
     return next(err);
   }
-  if (!req.body) return next(new Error('Cannot get the req.body'));
 
-  var data = req.body;
-  var Account = req.models.account;
+  res.render("create_admin");
+});
 
-  Account.create(data)
-    .then(function(newAcc){
-      res.redirect('/accounts/' + newAcc.id);
-    }, function(error){
-      return res.render("create", {
-        error: error
+router.post('/create_admin', 
+  function(req, res, next) {
+    if (!res.locals.isAdmin) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
+    if (!req.body) return next(new Error('Cannot get the req.body'));
+
+    next();
+  }, function(req, res, next) {
+    var data = req.body;
+    data['is_admin'] = true;
+    var Account = req.models.account;
+
+    Account.create(data)
+      .then(function(account){
+        res.redirect("/accounts");
+      }, function(error){
+        return res.render("create_admin", {
+          error: error
+        });
       });
+  }
+);
+
+router.get('/', function(req, res, next) {
+  if (!res.locals.isAdmin) {
+    var err = new Error('You are not permitted to access this!');
+    err.status = 401;
+    return next(err);
+  }
+  var Account = req.models.account;
+  Account.findAll({include: req.models.account_detail})
+    .then(function(accounts){
+        res.render("list", {accounts: accounts});
+      }, 
+      function(error){
+        return next(error);
     });
 });
 
@@ -154,22 +230,6 @@ router.post('/update_password', function(req, res, next) {
 //--------------------------------------------------------
 
 //----------------- Authenticated section --------------------
-router.get('/', function(req, res, next) {
-  if (!res.locals.authenticated) {
-    var err = new Error('You are not permitted to access this!');
-    err.status = 401;
-    return next(err);
-  }
-  var Account = req.models.account;
-  Account.findAll({include: req.models.account_detail})
-    .then(function(accounts){
-        res.render("list", {accounts: accounts});
-      }, 
-      function(error){
-        return next(error);
-    });
-});
-
 router.get('/:id', function (req, res, next) {
   if (!res.locals.authenticated) {
     var err = new Error('You are not permitted to access this!');
@@ -181,37 +241,16 @@ router.get('/:id', function (req, res, next) {
     include: [
       req.models.account_detail
     ]
-  })
-    .then(function(account) {
+  }).then(function(account) {
       if (!account) return next(new Error("Can't find the account with id: " + req.params.id));
-      account.getProjectProfiles({
-        where: {
-          account_id: account.id
-        },
-        include: [
-          req.models.security_level, 
-          req.models.project,
-          req.models.account,
-          {
-            model: req.models.role,
-            as: 'roles'
-          }
-        ]
-      })
-        .then(function (project_profiles) {
-            res.render('view', {
-              account: account,
-              is_owner: account.id == res.locals.current_account.id,
-              project_profiles: project_profiles
-            }); 
-          }, function (error) {
-            return next(error);
-          }
-        );
-      }, 
-      function(error) {
-        return next(error);
-    });
+      return res.render('view', {
+        account: account,
+        is_owner: account.id == res.locals.current_account.id
+      }); 
+    }, 
+    function(error) {
+      return next(error);
+  });
 });
 //--------------------------------------------------------
 
