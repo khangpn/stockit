@@ -8,10 +8,6 @@ module.exports = function(sequelize, DataTypes) {
         validate: {
           notEmpty: {
             msg: "Name is required"
-          },
-          len: {
-            args: [8, 128],
-            msg: "Name should be from 8 to 128 characters length"
           }
         }
       },

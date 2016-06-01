@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Profile
+    div.panel-body
+      div.row
+        label.col-md-1 Name:
+        div.col-md-11
+          = item.name
+      div.row
+        label.col-md-1 Code:
+        div.col-md-11
+          = item.code
+      div.row
+        label.col-md-1 Price:
+        div.col-md-11
+          = item.price
+      div.row
+        label.col-md-1 In stock:
+        div.col-md-11
+          = item.in_stock > 0 ? "yes" : "no"
+      div.row
+        label.col-md-1 Description:
+        div.col-md-11
+          = item.description
+      div.row
+        label.col-md-1 Note:
+        div.col-md-11
+          = item.note
+      if isAdmin
+        div.row
+          div.col-sm-1
+            a.btn.btn-danger(href="/items/delete/" + item.id,
+              role="button")
+              | Delete Item

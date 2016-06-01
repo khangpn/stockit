@@ -1,0 +1,54 @@
+form.form-horizontal(action='/items/create', method='post')
+  if (item && !item.isNewRecord)
+    input.form-control(type='hidden',
+      name='id',
+      id='Item_id',
+      value=item.id)
+  div.form-group
+    label.col-sm-2.control-label(for='Item_email') Name
+    div.col-sm-10
+      input.form-control(type='text',
+        name='name',
+        id='Item_name',
+        placeholder='Name')
+  div.form-group
+    label.col-sm-2.control-label(for='Item_code') Code
+    div.col-sm-10
+      input.form-control(type='text',
+        name='code',
+        id='Item_code',
+        placeholder='Code')
+  div.form-group
+    label.col-sm-2.control-label(for='Item_price') Price
+    div.col-sm-10
+      input.form-control(type='text',
+        name='price',
+        id='Item_price',
+        placeholder='Price')
+  div.form-group
+    label.col-sm-2.control-label(for='Item_in_stock') In Stock
+    div.col-sm-10
+      input.form-control(type='text',
+        name='in_stock',
+        id='Item_in_stock',
+        placeholder='In Stock'
+      )
+  div.form-group
+    label.col-sm-2.control-label(for='Item_description') Description
+    div.col-sm-10
+      textarea.form-control(
+        name='description',
+        id='Item_description',
+        placeholder='Description'
+      )
+  div.form-group
+    label.col-sm-2.control-label(for='Item_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Item_note',
+        placeholder='Note'
+      )
+  div.form-group
+    div.col-sm-offset-2.col-sm-10
+      input.btn.btn-default(type='submit' value='Submit')
