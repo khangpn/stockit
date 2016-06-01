@@ -99,6 +99,13 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       instanceMethods: {
+        checkPasswordMatch: function(p, cb) {
+          bcrypt.compare(p, this.password, 
+            function(err, result) {
+            if (err) return cb(err);
+            return cb(null, result);
+          });
+        },
         authenticate: function(auth, cb) {
           if (this.name !== auth.name){
             return cb(false);

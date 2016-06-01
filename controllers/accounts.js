@@ -184,49 +184,56 @@ router.post('/update_detail', function(req, res, next) {
   }
 });
 
-router.get('/update_password', function(req, res, next) {
-  if (!res.locals.authenticated) {
-    var err = new Error('You are not permitted to access this!');
-    err.status = 401;
-    return next(err);
+router.get('/update_password',
+  function(req, res, next) {
+    if (!res.locals.authenticated) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
+    res.render('update_password', {
+      account: res.locals.current_account
+    }); 
   }
+);
 
-  res.render('update_password', {
-    account: res.locals.current_account
-  }); 
-});
+router.post('/update_password',
+  function(req, res, next) {
+    if (!res.locals.authenticated) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
+    if (!req.body) return next(new Error('Cannot get the req.body'));
+    next();
+  }, function(req, res, next) {
+    var data = req.body;
+    var Account = req.models.account;
+    var account = res.locals.current_account;
 
-router.post('/update_password', function(req, res, next) {
-  if (!res.locals.authenticated) {
-    var err = new Error('You are not permitted to access this!');
-    err.status = 401;
-    return next(err);
-  }
-  if (!req.body) return next(new Error('Cannot get the req.body'));
+    account.checkPasswordMatch(data.old_password, function(error, matched){
+      if (error) return next(error);
 
-  var data = req.body;
-  var Account = req.models.account;
-  var id = res.locals.current_account.id;
-
-  Account.findById(data.id)
-    .then(function(account) {
-        if (!account) return next(new Error("Can't find the account with id: " + req.params.id));
+      if (matched) {
         account.set('password', data.password);
         account.set('password_confirm', data.password_confirm);
         account.save()
           .then(function(updatedAcc){
             res.redirect('/accounts/' + updatedAcc.id);
           }, function(error){
+            console.log(error);
             return res.render("update_password", {
               account: account,
               error: error
             });
           });
-       }, 
-      function(error) {
-        return next(error);
+      } else {
+        var err = new Error('Your old password is incorrect!');
+        return next(err);
+      }
     });
-});
+  }
+);
 //--------------------------------------------------------
 
 //----------------- Authenticated section --------------------
