@@ -19,7 +19,7 @@ router.post('/login', function(req, res, next) {
   var Token = req.models.token;
   Account.findAll({
     where: {
-      name: data.name
+      email: data.email
     }
   })
     .then(function(accounts){
@@ -27,7 +27,7 @@ router.post('/login', function(req, res, next) {
       function wrongAuth () {
         var error = { errors: [] };
         var e = {
-          message: "Username or password is not correct"
+          message: "Email address or password is not correct"
         };
         error.errors.push(e);
         return res.render("login", {
