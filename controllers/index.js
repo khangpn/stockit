@@ -13,6 +13,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
+  if (res.locals.authenticated) return res.redirect('/accounts/' + res.locals.current_account.id);
   if (!req.body) return next(new Error('Cannot get the req.body'));
   var data = req.body;
   var Account = req.models.account;
