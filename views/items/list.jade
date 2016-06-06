@@ -3,7 +3,7 @@ extends ../layout
 block content
   div.panel.panel-default
     div.panel-heading
-      h3.panel-title Accounts List
+      h3.panel-title Items List
     div.panel-body
       div.table-responsive
         table.table.table-hover
@@ -15,7 +15,7 @@ block content
               th Price
               th In stock
           tbody
-            for account in accounts
+            for item in items
               tr
                 td=item.id
                 td
