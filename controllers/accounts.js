@@ -18,11 +18,22 @@ router.post('/create', function(req, res, next) {
   if (!req.body) return next(new Error('Cannot get the req.body'));
 
   var data = req.body;
-  delete(data['is_admin']);
-  var Account = req.models.account;
+  data['account']['email'] = data['email'];
 
-  Account.create(data)
-    .then(function(account){
+  // This is because of the current sequelize version error.
+  // Unless we have this, it will add null to account_id, hence raise "can not be null" error because of our model definition.
+  data['account_id'] = 'tmp'; 
+
+  delete(data['account']['is_admin']);
+  var Account = req.models.account;
+  var Customer = req.models.customer;
+
+  console.log(data);
+  return Customer.create(data, {
+    include: [Account]
+  })
+    .then(function(customer){
+      var account = customer.account;
       // Handle logging in
       (function login() {
         var Token = req.models.token;
