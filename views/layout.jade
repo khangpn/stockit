@@ -36,9 +36,10 @@ html
                   li
                     a(href="/items")
                       | Items list
-                  li
-                    a(href="/items/create")
-                      | Create item
+                  if isAdmin
+                    li
+                      a(href="/items/create")
+                        | Create item
               if isAdmin
                 li.dropdown
                   a.dropdown-toggle(href="#",
