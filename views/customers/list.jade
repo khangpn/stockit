@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Customers List
+    div.panel-body
+      div.table-responsive
+        table.table.table-hover
+          thead
+            tr
+              th ID
+              th FullName
+              th Email
+              th Address
+              th Phone
+          tbody
+            for customer in customers
+              tr
+                td
+                  a(href='/customers/' + customer.id)=customer.id
+                td
+                  a(href='/customers/' + customer.id)=customer.fullname
+                td=customer.email
+                td=customer.address
+                td=customer.phone

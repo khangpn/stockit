@@ -19,16 +19,17 @@ block content
           label.col-md-1 Note:
           div.col-md-11
             = detail.note
-      if is_owner
+      if isOwner || isAdmin
+          div.col-sm-2
+            a(href="/accounts/edit/" + current_account.id,
+              role="button")
+              | Edit Profile
+      if isOwner
         div.row
           div.col-sm-3
             a(href="/accounts/update_password",
               role="button")
               | Update Password
-          div.col-sm-2
-            a(href="/accounts/update_detail",
-              role="button")
-              | Edit Profile
       if isAdmin
         div.row
           div.col-sm-1

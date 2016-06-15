@@ -67,7 +67,7 @@ router.post('/create', function(req, res, next) {
 //--------------------------------------------------------
 
 //------------------- Admin Section ----------------------
-router.get('/create_admin', function(req, res, next) {
+router.get('/admin/create', function(req, res, next) {
   if (!res.locals.isAdmin) {
     var err = new Error('You are not permitted to access this!');
     err.status = 401;
@@ -77,7 +77,7 @@ router.get('/create_admin', function(req, res, next) {
   res.render("create_admin");
 });
 
-router.post('/create_admin', 
+router.post('/admin/create', 
   function(req, res, next) {
     if (!res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
@@ -110,7 +110,9 @@ router.get('/', function(req, res, next) {
     return next(err);
   }
   var Account = req.models.account;
-  Account.findAll({include: req.models.account_detail})
+  Account.findAll({
+    include: [req.models.admin, req.models.customer]
+  })
     .then(function(accounts){
         res.render("list", {accounts: accounts});
       }, 
@@ -139,60 +141,35 @@ router.get('/delete/:id', function(req, res, next) {
 //--------------------------------------------------------
 
 //------------------- Owner section ----------------------
-router.get('/update_detail', function(req, res, next) {
+router.get('/edit/:id', function(req, res, next) {
   if (!res.locals.authenticated) {
     var err = new Error('You are not permitted to access this!');
     err.status = 401;
     return next(err);
   }
 
-  res.render('detail',
-    {
-      account: res.locals.current_account
-    } 
-  );
-});
+  var Account = req.models.account;
+  var Admin = req.models.admin;
+  var Customer = req.models.customer;
 
-router.post('/update_detail', function(req, res, next) {
-  if (!res.locals.authenticated) {
-    var err = new Error('You are not permitted to access this!');
-    err.status = 401;
-    return next(err);
-  }
-  var data = req.body;
-  var AccountDetail = req.models.account_detail;
-  var account = res.locals.current_account;
+  return Account.findById(req.params.id, {
+    include: [Admin, Customer]
+  }).then(function(account) {
+      if (!account) 
+        return next(new Error("Can't find the account with id: " + req.params.id));
 
-  var handleSuccess = function () {
-    res.redirect('/accounts/' + account.id);
-  }
+      var isOwner = account.id == res.locals.current_account.id
+      var isAdmin = res.locals.isAdmin;
 
-  var handleError = function (account, error) {
-     return res.render("detail", {
-       account: account,
-       error: error
-     });
-  }
-
-  if (account.account_detail) {
-    var detail = account.account_detail;
-    detail.update(data).then(
-      function(detail) {
-        handleSuccess();
-      },
-      function(error) {
-        handleError(account, error);
+      if (isOwner || isAdmin) {
+        if (account.admin)
+          return res.redirect("/admins/edit/" + account.admin.id);
+        return res.redirect("/customers/edit/" + account.customer.id);
       }
-    );
-  } else {
-    data.account_id = account.id;
-    AccountDetail.create(data)
-      .then(function(newAccDetail){
-        handleSuccess();
-      }, function(error){
-        handleError(account, error);
-      });
-  }
+    }, 
+    function(error) {
+      return next(error);
+    });
 });
 
 router.get('/update_password',
@@ -257,13 +234,13 @@ router.get('/:id', function (req, res, next) {
   var Account = req.models.account;
   Account.findById(req.params.id, {
     include: [
-      req.models.account_detail
+      req.models.admin
     ]
   }).then(function(account) {
       if (!account) return next(new Error("Can't find the account with id: " + req.params.id));
       return res.render('view', {
         account: account,
-        is_owner: account.id == res.locals.current_account.id
+        isOwner: account.id == res.locals.current_account.id
       }); 
     }, 
     function(error) {

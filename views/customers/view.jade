@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Profile
+    div.panel-body
+      div.row
+        label.col-md-1 Fullname:
+        div.col-md-11
+          = customer.fullname
+      div.row
+        label.col-md-1 Email:
+        div.col-md-11
+          = customer.email
+      div.row
+        label.col-md-1 Address:
+        div.col-md-11
+          = customer.address
+      div.row
+        label.col-md-1 Phone:
+        div.col-md-11
+          = customer.phone
+      div.row
+        label.col-md-1 Note:
+        div.col-md-11
+          = customer.note
+      if isAdmin
+        div.row
+          div.col-sm-1
+            a.btn.btn-danger(href="/customers/delete/" + customer.id,
+              role="button")
+              | Delete Customer

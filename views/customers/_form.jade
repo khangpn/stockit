@@ -1,0 +1,43 @@
+form.form-horizontal(action='/customers/update', method="post")
+  if (customer && !customer.isNewRecord)
+    input.form-control(type='hidden',
+      name='id',
+      id='Customer_id',
+      value=customer.id)
+  div.form-group
+    label.col-sm-2.control-label(for='Customer_email') Fullname
+    div.col-sm-10
+      input.form-control(type='text',
+        name='fullname',
+        id='Customer_fullname',
+        placeholder='Fullname',
+        value=customer.fullname)
+  div.form-group
+    label.col-sm-2.control-label(for='Customer_address') Address
+    div.col-sm-10
+      input.form-control(type='text',
+        name='address',
+        id='Customer_address',
+        placeholder='Address',
+        value=customer.address)
+  div.form-group
+    label.col-sm-2.control-label(for='Customer_phone') Phone
+    div.col-sm-10
+      input.form-control(type='text',
+        name='phone',
+        id='Customer_phone',
+        placeholder='Phone',
+        value=customer.phone)
+  if isAdmin
+    div.form-group
+      label.col-sm-2.control-label(for='Customer_note') Note
+      div.col-sm-10
+        textarea.form-control(
+          name='note',
+          id='Customer_note',
+          placeholder='Note',
+          value=customer.phone
+        )
+  div.form-group
+    div.col-sm-offset-2.col-sm-10
+      input.btn.btn-default(type='submit' value='Submit')
