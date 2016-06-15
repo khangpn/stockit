@@ -83,7 +83,7 @@ module.exports = function(sequelize, DataTypes) {
               allowNull: false
             }
           });
-          Account.hasOne(models.account_detail, {
+          Account.hasOne(models.admin, {
             onDelete: "CASCADE",
             foreignKey: {
               allowNull: false

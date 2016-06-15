@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-  var AccountDetail = sequelize.define('account_detail', {
+  var Admin = sequelize.define('admin', {
       fullname: { 
         type: DataTypes.STRING, 
         allowNull: false,
@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
       freezeTableName: true,
       classMethods: {
         associate: function(models) {
-          AccountDetail.belongsTo(models.account, {
+          Admin.belongsTo(models.account, {
             onDelete: "CASCADE",
             foreignKey: {
               allowNull: false
@@ -36,5 +36,5 @@ module.exports = function(sequelize, DataTypes) {
     }
   );
 
-  return AccountDetail
+  return Admin
 };
