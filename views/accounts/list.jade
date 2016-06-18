@@ -16,9 +16,15 @@ block content
           tbody
             for account in accounts
               - var detail = account.account_detail;
+              - var customer = account.customer;
               tr
                 td=account.id
                 td
                   a(href='/accounts/' + account.id)=account.email
-                td=detail ? detail.fullname : ''
+                if (!customer && !detail) 
+                  td=''
+                if (detail) 
+                  td=detail.fullname
+                if (customer) 
+                  td=customer.fullname
                 td=account.is_admin ? 'true' : 'false'

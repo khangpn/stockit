@@ -27,7 +27,7 @@ block content
       if isOwner
         div.row
           div.col-sm-3
-            a(href="/accounts/update_password",
+            a(href="/accounts/" + current_account.id + "/password/update",
               role="button")
               | Update Password
       if isAdmin

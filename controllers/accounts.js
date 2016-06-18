@@ -172,7 +172,7 @@ router.get('/edit/:id', function(req, res, next) {
     });
 });
 
-router.get('/update_password',
+router.get('/:id/password/update',
   function(req, res, next) {
     if (!res.locals.authenticated) {
       var err = new Error('You are not permitted to access this!');
@@ -185,9 +185,9 @@ router.get('/update_password',
   }
 );
 
-router.post('/update_password',
+router.post('/:id/password/update',
   function(req, res, next) {
-    if (!res.locals.authenticated) {
+    if (!res.locals.authenticated || res.locals.current_account.id != parseInt(req.params.id)) {
       var err = new Error('You are not permitted to access this!');
       err.status = 401;
       return next(err);
