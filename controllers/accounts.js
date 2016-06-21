@@ -3,7 +3,7 @@ var router = express.Router();
 
 //------------------- Unauthorized Section ----------------------
 router.get('/create', function(req, res, next) {
-  if (res.locals.authenticated) {
+  if (res.locals.authenticated && !res.locals.isAdmin) {
     return res.redirect("/");
   }
 
@@ -11,7 +11,7 @@ router.get('/create', function(req, res, next) {
 });
 
 router.post('/create', function(req, res, next) {
-  if (res.locals.authenticated) {
+  if (res.locals.authenticated && !res.locals.isAdmin) {
     return res.redirect("/");
   }
 
@@ -35,29 +35,31 @@ router.post('/create', function(req, res, next) {
     .then(function(customer){
       var account = customer.account;
       // Handle logging in
-      (function login() {
-        var Token = req.models.token;
-        var token = Token.generateToken();
-        var origin_name = token.name;
-        token.account_id = account.id;
-        token.save()
-          .then(function(tk){
-            if (data.remember === 'on') {
-              res.cookie('token', origin_name, {
-                httpOnly: true,
-                maxAge: 1209600000
-              });
-            } else {
-              res.cookie('token', origin_name, {
-                httpOnly: true
-              });
-            }
-            return res.redirect('/accounts/' + account.id);
-            
-          }, function(error) {
-            return next(error);
-          });
-      })();
+      if (!res.locals.authenticated) {
+        (function login() {
+          var Token = req.models.token;
+          var token = Token.generateToken();
+          var origin_name = token.name;
+          token.account_id = account.id;
+          token.save()
+            .then(function(tk){
+              if (data.remember === 'on') {
+                res.cookie('token', origin_name, {
+                  httpOnly: true,
+                  maxAge: 1209600000
+                });
+              } else {
+                res.cookie('token', origin_name, {
+                  httpOnly: true
+                });
+              }
+              return res.redirect('/accounts/' + account.id);
+              
+            }, function(error) {
+              return next(error);
+            });
+        })();
+      }
     }, function(error){
       return res.render("create", {
         error: error
@@ -99,29 +101,31 @@ router.post('/admin/create',
       include: [Account]
     }).then(function(admin){
         // Handle logging in
-        (function login() {
-          var Token = req.models.token;
-          var token = Token.generateToken();
-          var origin_name = token.name;
-          token.account_id = admin.account.id;
-          token.save()
-            .then(function(tk){
-              if (data.remember === 'on') {
-                res.cookie('token', origin_name, {
-                  httpOnly: true,
-                  maxAge: 1209600000
-                });
-              } else {
-                res.cookie('token', origin_name, {
-                  httpOnly: true
-                });
-              }
-              return res.redirect('/accounts/' + admin.account.id);
-              
-            }, function(error) {
-              return next(error);
-            });
-        })();
+        if (!res.locals.authenticated) {
+          (function login() {
+            var Token = req.models.token;
+            var token = Token.generateToken();
+            var origin_name = token.name;
+            token.account_id = admin.account.id;
+            token.save()
+              .then(function(tk){
+                if (data.remember === 'on') {
+                  res.cookie('token', origin_name, {
+                    httpOnly: true,
+                    maxAge: 1209600000
+                  });
+                } else {
+                  res.cookie('token', origin_name, {
+                    httpOnly: true
+                  });
+                }
+                return res.redirect('/accounts/' + admin.account.id);
+                
+              }, function(error) {
+                return next(error);
+              });
+          })();
+        }
       }, function(error){
         return res.render("create_admin", {
           error: error
