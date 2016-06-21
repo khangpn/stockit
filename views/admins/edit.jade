@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  div.row
+    div.page-header
+      h1 Edit Info
+    // error output
+    include ../_error_list
+    // creation form
+    div.col-md-9
+      include ./_form.jade

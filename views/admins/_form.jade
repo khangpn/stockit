@@ -1,0 +1,25 @@
+form.form-horizontal(action='/admins/update', method="post")
+  input.form-control(type='hidden',
+    name='id',
+    id='Admin_id',
+    value=admin.id)
+  div.form-group
+    label.col-sm-2.control-label(for='Admin_email') Fullname
+    div.col-sm-10
+      input.form-control(type='text',
+        name='fullname',
+        id='Admin_fullname',
+        placeholder='Fullname',
+        value=admin.fullname)
+  div.form-group
+    label.col-sm-2.control-label(for='Admin_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Admin_note',
+        placeholder='Note',
+        value=admin.phone
+      )=admin.note
+  div.form-group
+    div.col-sm-offset-2.col-sm-10
+      input.btn.btn-default(type='submit' value='Submit')

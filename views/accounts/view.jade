@@ -19,6 +19,16 @@ block content
           label.col-md-1 Note:
           div.col-md-11
             = detail.note
+      if account.admin
+        - var admin = account.admin
+        div.row
+          label.col-md-1 Fullname:
+          div.col-md-11
+            = admin.fullname
+        div.row
+          label.col-md-1 Note:
+          div.col-md-11
+            = admin.note
       if isOwner || isAdmin
           div.col-sm-2
             a(href="/accounts/edit/" + current_account.id,

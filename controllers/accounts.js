@@ -68,7 +68,7 @@ router.post('/create', function(req, res, next) {
 
 //------------------- Admin Section ----------------------
 router.get('/admin/create', function(req, res, next) {
-  if (!res.locals.isAdmin) {
+  if (process.env.NODE_ENV != "development" && !res.locals.isAdmin) {
     var err = new Error('You are not permitted to access this!');
     err.status = 401;
     return next(err);
@@ -79,7 +79,7 @@ router.get('/admin/create', function(req, res, next) {
 
 router.post('/admin/create', 
   function(req, res, next) {
-    if (!res.locals.isAdmin) {
+    if (process.env.NODE_ENV != "development" && !res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
       err.status = 401;
       return next(err);
@@ -89,12 +89,39 @@ router.post('/admin/create',
     next();
   }, function(req, res, next) {
     var data = req.body;
-    data['is_admin'] = true;
+    data['account']['email'] = data['email'];
+    data['account']['is_admin'] = true;
+    data['account_id'] = 'tmp';
     var Account = req.models.account;
+    var Admin = req.models.admin;
 
-    Account.create(data)
-      .then(function(account){
-        res.redirect("/accounts");
+    return Admin.create(data, {
+      include: [Account]
+    }).then(function(admin){
+        // Handle logging in
+        (function login() {
+          var Token = req.models.token;
+          var token = Token.generateToken();
+          var origin_name = token.name;
+          token.account_id = admin.account.id;
+          token.save()
+            .then(function(tk){
+              if (data.remember === 'on') {
+                res.cookie('token', origin_name, {
+                  httpOnly: true,
+                  maxAge: 1209600000
+                });
+              } else {
+                res.cookie('token', origin_name, {
+                  httpOnly: true
+                });
+              }
+              return res.redirect('/accounts/' + admin.account.id);
+              
+            }, function(error) {
+              return next(error);
+            });
+        })();
       }, function(error){
         return res.render("create_admin", {
           error: error
