@@ -31,7 +31,11 @@ block content
           = item.note
       if isAdmin
         div.row
-          div.col-sm-1
+          div.col-sm-2
             a.btn.btn-danger(href="/items/delete/" + item.id,
               role="button")
               | Delete Item
+          div.col-sm-2
+            a.btn.btn-primary(href="/items/edit/" + item.id,
+              role="button")
+              | Edit Item
