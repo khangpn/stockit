@@ -86,6 +86,21 @@ html
                     li
                       a(href="/accounts/admin/create")
                         | Create Admin
+                li.dropdown
+                  a.dropdown-toggle(href="#",
+                    data-toggle="dropdown",
+                    role="button",
+                    aria-haspopup="true",
+                    aria-expanded="false")
+                    | Orders
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/orders")
+                        | Orders List
+                    li
+                      a(href="/orders/create")
+                        | Create Order
           ul.nav.navbar-nav.navbar-right
             if authenticated
               li.dropdown
