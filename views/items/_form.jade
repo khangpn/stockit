@@ -44,7 +44,7 @@ form.form-horizontal(action=(!item || item.isNewRecord)
         name='description',
         id='Item_description',
         placeholder='Description'
-      )=item.description
+      )=item ? item.description : ''
   div.form-group
     label.col-sm-2.control-label(for='Item_note') Note
     div.col-sm-10
@@ -52,7 +52,7 @@ form.form-horizontal(action=(!item || item.isNewRecord)
         name='note',
         id='Item_note',
         placeholder='Note'
-      )=item.note
+      )=item ? item.note : ''
   div.form-group
     div.col-sm-offset-2.col-sm-10
       input.btn.btn-default(type='submit' value='Submit')
