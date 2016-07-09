@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Order Info
+    div.panel-body
+      div.row
+        label.col-md-1 ID:
+        div.col-md-11
+          = order.id
+      div.row
+        label.col-md-1 Total price:
+        div.col-md-11
+          = order.total_price
+      div.row
+        label.col-md-1 Note:
+        div.col-md-11
+          = order.note
+      if isAdmin
+        div.row
+          div.col-sm-2
+            a.btn.btn-danger(href="/orders/delete/" + order.id,
+              role="button")
+              | Delete order
+          div.col-sm-2
+            a.btn.btn-primary(href="/orders/edit/" + order.id,
+              role="button")
+              | Edit order

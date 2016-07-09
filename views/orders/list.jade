@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Items List
+    div.panel-body
+      div.table-responsive
+        table.table.table-hover
+          thead
+            tr
+              th ID
+              th Code
+              th Name
+              th Price
+              th In stock
+          tbody
+            for item in items
+              tr
+                td=item.id
+                td
+                  a(href='/items/' + item.id)=item.code
+                td=item.name
+                td=item.price
+                td=item.in_stock

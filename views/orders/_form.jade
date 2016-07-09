@@ -1,0 +1,59 @@
+form.form-horizontal(action=(!item || item.isNewRecord)
+? '/orders/create' : '/orders/update', method='post')
+  if (item && !item.isNewRecord)
+    input.form-control(type='hidden',
+      name='id',
+      id='Item_id',
+      value=item.id)
+  div.form-group
+    label.col-sm-2.control-label(for='Order_customer_id') Customer
+    div.col-sm-4
+      input.form-control(type='text',
+        name='customer_id',
+        id='OrderDetail_name',
+        placeholder='Name')
+  div.form-group
+    label.col-sm-2.control-label(for='OrderDetail_name') Item 1
+    div.col-sm-4
+      input.form-control(type='text',
+        name='order_details[0][item_id]',
+        id='OrderDetail_name',
+        placeholder='Name')
+    div.col-sm-1
+      input.form-control(type='text',
+        name='order_details[0][quantity]',
+        id='OrderDetail_quantity',
+        placeholder='Quantity')
+    div.col-sm-5
+      textarea.form-control(
+        name='order_details[0][note]',
+        id='Item_note',
+        placeholder='Note')
+  div.form-group
+    label.col-sm-2.control-label(for='OrderDetail_name') Item 2 
+    div.col-sm-4
+      input.form-control(type='text',
+        name='order_details[1][item_id]',
+        id='OrderDetail_name',
+        placeholder='Name')
+    div.col-sm-1
+      input.form-control(type='text',
+        name='order_details[1][quantity]',
+        id='OrderDetail_quantity',
+        placeholder='Quantity')
+    div.col-sm-5
+      textarea.form-control(
+        name='order_details[1][note]',
+        id='Item_note',
+        placeholder='Note')
+  div.form-group
+    label.col-sm-2.control-label(for='Order_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        name='note',
+        id='Order_note',
+        placeholder='Note'
+      )
+  div.form-group
+    div.col-sm-offset-2.col-sm-10
+      input.btn.btn-default(type='submit' value='Submit')
