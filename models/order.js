@@ -5,9 +5,10 @@ module.exports = function(sequelize, DataTypes) {
       total_price: { 
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue: 0,
         validate: {
           notEmpty: {
-            msg: "Price is required"
+            msg: "Total price is required"
           }
         }
       },
@@ -23,6 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         associate: function(models) {
           Order.hasMany(models.order_detail, {
             onDelete: "CASCADE",
+            as: "details",
             foreignKey: {
               allowNull: false
             }
@@ -33,6 +35,14 @@ module.exports = function(sequelize, DataTypes) {
               allowNull: false
             }
           });
+        }
+      },
+      instanceMethods: {
+        addPrice: function(subTotal) {
+          if (typeof(price) === 'number' && subTotal > 0) {
+            var oldTotal = this.total_price;
+            this.setDataValue("total_price",  subTotal + oldTotal);
+          }
         }
       }
     }
