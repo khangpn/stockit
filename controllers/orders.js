@@ -47,17 +47,6 @@ router.post('/create',
         errors.push(errorItem);
         continue;
       }
-      if (isNaN(quantity)) {
-        var errorItem = new Sequelize.ValidationErrorItem(
-          "The item quantity is invalid",
-          "invalid format",
-          "quantity",
-          detail.quantity
-        );
-        errors.push(errorItem);
-        continue;
-      }
-
       if (detailList[itemId] !== undefined) {
         var errorItem = new Sequelize.ValidationErrorItem(
           "The item Id is duplicated",
@@ -78,12 +67,13 @@ router.post('/create',
         error: new Sequelize.ValidationError("The input is invalid", errors)
       });
     }
+
+    // used for promises to throw error to the "catch"
     var throw_errors = function(errors) {
       if (errors.length !==0) {
         throw new Sequelize.ValidationError("The input is invalid", errors);
       }
     }
-    throw_errors(errors); // report detail info
 
     var customerId = data.customer_id;
     Customer.findById(customerId).then(function(customer) {
@@ -94,9 +84,9 @@ router.post('/create',
           "customer_id",
           customerId
         );
+        errors.push(errorItem);
+        throw_errors(errors); // report invalid customer
       }
-      errors.push(errorItem);
-      throw_errors(errors); // report invalid customer
     }).then(function () {
       return Item.findAll({
         where: {
@@ -106,7 +96,14 @@ router.post('/create',
         }
       }).then(function(items) {
         if (items.length != orderDetails.length) {
-          return next(new Error('The items list is invalid'));
+          var errorItem = new Sequelize.ValidationErrorItem(
+            "The item IDs are invalid",
+            "invalid format",
+            "item_id",
+            idList
+          );
+          errors.push(errorItem);
+          throw_errors(errors); //report the item id
         }
 
         for (var i=0; i<items.length; i++) {
