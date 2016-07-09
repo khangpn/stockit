@@ -25,11 +25,12 @@ router.post('/create',
   }, function(req, res, next) {
     var data = req.body;
     var Item = req.models.item;
+    var Customer = req.models.customer;
     var orderDetails = data['order_details'];
     var totalPrice = 0;
     var Sequelize = req.models.Sequelize;
-
     var errors = [];
+
     var detailList = {};
     var idList = [];
     for (var i = 0; i < orderDetails.length; i++) {
@@ -77,34 +78,74 @@ router.post('/create',
         error: new Sequelize.ValidationError("The input is invalid", errors)
       });
     }
-
-    return Item.findAll({
-      where: {
-        id: {
-          $in: idList
-        }
+    var throw_errors = function(errors) {
+      if (errors.length !==0) {
+        throw new Sequelize.ValidationError("The input is invalid", errors);
       }
-    }).then(
-      function(items) {
+    }
+    throw_errors(errors); // report detail info
+
+    var customerId = data.customer_id;
+    Customer.findById(customerId).then(function(customer) {
+      if (!customer) {
+        var errorItem = new Sequelize.ValidationErrorItem(
+          "Cannot find the customer",
+          "entry not found",
+          "customer_id",
+          customerId
+        );
+      }
+      errors.push(errorItem);
+      throw_errors(errors); // report invalid customer
+    }).then(function () {
+      return Item.findAll({
+        where: {
+          id: {
+            $in: idList
+          }
+        }
+      }).then(function(items) {
         if (items.length != orderDetails.length) {
           return next(new Error('The items list is invalid'));
         }
+
+        for (var i=0; i<items.length; i++) {
+          var item = items[i];
+          var detail = detailList[item.id];
+          if (item.in_stock < detail.quantity) {
+            var errorItem = new Sequelize.ValidationErrorItem(
+              "The number of item in stock is less than the order quantity",
+              "over quantity",
+              "quantity",
+              detail.quantity
+            );
+            errors.push(errorItem); //report item in stock
+          }
+        }
+
+        throw_errors(errors); //report the item quantity
+
         res.locals.items = items;
+        res.locals.id_list = idList;
         res.locals.details = detailList;
-        return next();
-      }, function(error) {
-        return next(error);
-      }
-    );
+        next();
+        return null;
+      });
+    }).catch(function (error) {
+      res.render("create", {
+        error: error
+      });
+    });
   }, function(req, res, next) {
     var data = req.body;
     var items = res.locals.items;
+    var idList = res.locals.id_list;
     var details = res.locals.details;
     var account = res.locals.current_account;
-    console.log(details);
 
     var OrderDetail = req.models.order_detail;
     var Order = req.models.order;
+    var Item = req.models.order;
 
     var order = {
       account_id: account.id,
@@ -114,6 +155,7 @@ router.post('/create',
       order_details: []
     };
 
+    var itemPromises = [];
     for (var i=0; i<items.length; i++) {
       var item = items[i];
       var itemId = item.id;
@@ -123,22 +165,30 @@ router.post('/create',
       detail.total_price = detail.price * detail.quantity;
       order.total_price += detail.total_price;
 
-      detail.order_id = 'tmp';
+      detail.order_id = 'sequelize need to fix this';
 
       order.order_details.push(detail);
+
+      item.in_stock -= detail.quantity;
+      itemPromises.push(item.save());
     }
 
+    var sequelize = req.models.sequelize;
     return Order.create(order, 
       {
         include: [OrderDetail]
       }
-    ).then(function(order){
+    ).then(function(order) {
+      var Promise = require('promise');
+      Promise.all(itemPromises).then(function (items) {
         res.redirect("/orders/" + order.id);
-      }, function(error){
-        return res.render("create", {
-          error: error
-        });
       });
+      return null;
+    }).catch(function (error) {
+      res.render("create", {
+        error: error
+      });
+    });
   }
 );
 
