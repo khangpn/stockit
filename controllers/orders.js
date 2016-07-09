@@ -152,7 +152,6 @@ router.post('/create',
       order_details: []
     };
 
-    var itemPromises = [];
     for (var i=0; i<items.length; i++) {
       var item = items[i];
       var itemId = item.id;
@@ -167,7 +166,6 @@ router.post('/create',
       order.order_details.push(detail);
 
       item.in_stock -= detail.quantity;
-      itemPromises.push(item.save());
     }
 
     var sequelize = req.models.sequelize;
@@ -177,6 +175,11 @@ router.post('/create',
       }
     ).then(function(order) {
       var Promise = require('promise');
+      var itemPromises = [];
+      for (var i=0; i<items.length; i++) {
+        var item = items[i];
+        itemPromises.push(item.save());
+      }
       Promise.all(itemPromises).then(function (items) {
         res.redirect("/orders/" + order.id);
       });
