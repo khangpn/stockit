@@ -3,23 +3,19 @@ extends ../layout
 block content
   div.panel.panel-default
     div.panel-heading
-      h3.panel-title Items List
+      h3.panel-title Orders List
     div.panel-body
       div.table-responsive
         table.table.table-hover
           thead
             tr
               th ID
-              th Code
-              th Name
-              th Price
-              th In stock
+              th Total Price
+              th Date
           tbody
-            for item in items
+            for order in orders
               tr
-                td=item.id
                 td
-                  a(href='/items/' + item.id)=item.code
-                td=item.name
-                td=item.price
-                td=item.in_stock
+                  a(href='/orders/' + order.id)=order.id
+                td=order.total_price
+                td=order.created_at
