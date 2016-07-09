@@ -47,6 +47,16 @@ router.post('/create',
         errors.push(errorItem);
         continue;
       }
+      if (isNaN(quantity)) {
+        var errorItem = new Sequelize.ValidationErrorItem(
+          "The quantity is invalid",
+          "invalid format",
+          "quantity",
+          quantity
+        );
+        errors.push(errorItem);
+        continue;
+      }
       if (detailList[itemId] !== undefined) {
         var errorItem = new Sequelize.ValidationErrorItem(
           "The item Id is duplicated",
@@ -189,6 +199,71 @@ router.post('/create',
         error: error
       });
     });
+
+    /*Another way to do this task for reference*/
+    //var Item = req.models.order;
+    //var order = {
+    //  account_id: account.id,
+    //  customer_id: data.customer_id,
+    //  total_price: 0,
+    //  note: data.note
+    //};
+
+    //return Order.create(order).then(function(order) {
+    //  var itemPromises = [];
+    //  var detailArray = [];
+    //  for (var i=0; i<items.length; i++) {
+    //    var item = items[i];
+    //    var itemId = item.id;
+    //    var detail = details[itemId];
+
+    //    detail.price = item.price;
+    //    detail.total_price = detail.price * detail.quantity;
+    //    order.total_price += detail.total_price;
+
+    //    detail.order_id = order.id;
+
+    //    item.in_stock -= detail.quantity;
+    //    itemPromises.push(item.save());
+    //    detailArray.push(detail);
+    //  }
+    //  
+    //  return OrderDetail.bulkCreate(detailArray, {
+    //    validate: true
+    //  }).then(function () {
+    //    return order.getDetails().then(
+    //      function(orderDetails) {
+    //        for (var i = 0; i < orderDetails.length; i++) {
+    //          var orderDetail = orderDetails[i];
+    //          order.addPrice(orderDetail.price);
+    //        }
+    //        return order.save();
+    //      }
+    //    ).then(function (order) {
+    //      var Sequelize = req.models.Sequelize;
+    //      var Promise = Sequelize.Promise;
+
+    //      Promise.all(itemPromises).then(function (items) {
+    //        res.redirect("/orders/" + order.id);
+    //      }).catch(function (error) {
+    //        res.render("create", {
+    //          error: error
+    //        });
+    //      });
+    //      return null;
+    //    }).catch(function (error) {
+    //      next(error);
+    //    });
+    //  }).catch(function (error) {
+    //    res.render("create", {
+    //      error: error
+    //    });
+    //  });
+    //}).catch(function (error) {
+    //  res.render("create", {
+    //    error: error
+    //  });
+    //});
   }
 );
 

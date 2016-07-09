@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         associate: function(models) {
           Order.hasMany(models.order_detail, {
             onDelete: "CASCADE",
-            as: "details",
+            //as: "details",
             foreignKey: {
               allowNull: false
             }
