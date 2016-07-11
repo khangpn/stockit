@@ -8,6 +8,7 @@ div.panel.panel-default
           thead
             tr
               th Code
+              th Name
               th Price
               th Quantity
               th Total
@@ -16,6 +17,7 @@ div.panel.panel-default
               tr
                 td
                   a(href='/items/' + detail.item_id)=detail.item.code
+                td=detail.item.name
                 td=detail.price
                 td=detail.quantity
                 td=detail.quantity * detail.price
