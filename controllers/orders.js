@@ -360,11 +360,20 @@ router.get('/', function(req, res, next) {
 
 router.get('/:id', function (req, res, next) {
   var Order = req.models.order;
+  var Item = req.models.item;
   Order.findById(req.params.id).then(function(order) {
       if (!order) return next(new Error("Can't find the order with id: " + req.params.id));
-      return res.render('view', {
-        order: order
-      }); 
+      order.getOrder_details({
+        include: [Item]
+      }).then(function (details) {
+        return res.render('view', {
+          order: order,
+          details: details
+        }); 
+      }).catch(function(error) {
+        return next(error);
+      });
+      return null; //either return the getOrder_details promise or null will stop the promise warning
     }, 
     function(error) {
       return next(error);

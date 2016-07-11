@@ -17,6 +17,13 @@ block content
         label.col-md-1 Note:
         div.col-md-11
           = order.note
+      div.row
+        label.col-md-1 Created:
+        div.col-md-4
+          = order.created_at
+        label.col-md-1 Updated:
+        div.col-md-4
+          = order.updated_at
       if isAdmin
         div.row
           div.col-sm-2
@@ -27,3 +34,4 @@ block content
             a.btn.btn-primary(href="/orders/edit/" + order.id,
               role="button")
               | Edit order
+  include ./_details.jade
