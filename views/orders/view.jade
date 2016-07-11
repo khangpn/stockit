@@ -24,6 +24,10 @@ block content
         label.col-md-1 Updated:
         div.col-md-4
           = order.updated_at
+      div.row
+        label.col-md-1 Customer:
+        div.col-md-11
+          a(href='/customers/' + order.customer_id)=order.customer.fullname
       if isAdmin
         div.row
           div.col-sm-2

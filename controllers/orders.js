@@ -361,7 +361,10 @@ router.get('/', function(req, res, next) {
 router.get('/:id', function (req, res, next) {
   var Order = req.models.order;
   var Item = req.models.item;
-  Order.findById(req.params.id).then(function(order) {
+  var Customer = req.models.customer;
+  return Order.findById(req.params.id, {
+    include: [Customer]
+  }).then(function(order) {
       if (!order) return next(new Error("Can't find the order with id: " + req.params.id));
       order.getOrder_details({
         include: [Item]
