@@ -6,6 +6,20 @@ block content
       h1 Edit item
     // error output
     include ../_error_list
-    // creation form
-    div.col-md-9
-      include ./_form.jade
+    form.form-horizontal(action='/orders/update', method='post')
+      if (order && !order.isNewRecord)
+        input.form-control(type='hidden',
+          name='id',
+          id='Order_id',
+          value=order.id)
+      div.form-group
+        label.col-sm-2.control-label(for='Order_note') Note
+        div.col-sm-10
+          textarea.form-control(
+            name='note',
+            id='Order_note',
+            placeholder='Note'
+          )=order ? order.note : ""
+      div.form-group
+        div.col-sm-offset-2.col-sm-10
+          input.btn.btn-default(type='submit' value='Submit')

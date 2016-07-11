@@ -1,17 +1,18 @@
-form.form-horizontal(action=(!item || item.isNewRecord)
+form.form-horizontal(action=(!order || order.isNewRecord)
 ? '/orders/create' : '/orders/update', method='post')
-  if (item && !item.isNewRecord)
+  if (order && !order.isNewRecord)
     input.form-control(type='hidden',
       name='id',
-      id='Item_id',
-      value=item.id)
+      id='Order_id',
+      value=order.id)
   div.form-group
     label.col-sm-2.control-label(for='Order_customer_id') Customer
     div.col-sm-4
       input.form-control(type='text',
         name='customer_id',
         id='OrderDetail_name',
-        placeholder='Name')
+        placeholder='Name',
+        value=order ? order.customer_id : '')
   div.form-group
     label.col-sm-2.control-label(for='OrderDetail_name') Item 1
     div.col-sm-4

@@ -327,7 +327,7 @@ router.post('/update',
     Order.findById(data.id).then(function(order) {
       if (!order) return next(new Error("Can't find the order with id: " + data.id));
 
-      order.update(data).then(function(order){
+      return order.update(data).then(function(order){
         return res.redirect("/orders/" + order.id);
       }, function (error) {
         return res.render('edit', {
