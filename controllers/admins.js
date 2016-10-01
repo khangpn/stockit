@@ -64,22 +64,22 @@ router.get('/', function(req, res, next) {
     if (!res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
       err.status = 401;
-      return next(err);
+      return next(err); //this is mw return
     }
     next();
   }, function(req, res, next) {
     var Admin = req.models.admin;
     Admin.findAll({
       include: req.models.account
-    }).then(
-      function(admins) {
-        return res.render('list', {
-          admins: admins
-        });
-      }, function(error) {
-        return next(error);
-      }
-    );
+    }).then( function(admins) {
+      res.render('list', {
+        admins: admins
+      });
+      return null; //promise return
+    }).catch( function(error) {
+      next(error);
+      return null
+    });
   }
 );
 
