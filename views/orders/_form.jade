@@ -10,43 +10,49 @@ form.form-horizontal(action=(!order || order.isNewRecord)
     div.col-sm-4
       input.form-control(type='text',
         name='customer_id',
-        id='OrderDetail_name',
-        placeholder='Name',
+        id='OrderDetail_customer_name',
+        placeholder='Customer ID',
         value=order ? order.customer_id : '')
-  div.form-group
-    label.col-sm-2.control-label(for='OrderDetail_name') Item 1
-    div.col-sm-4
-      input.form-control(type='text',
-        name='order_details[0][item_id]',
-        id='OrderDetail_name',
-        placeholder='Name')
-    div.col-sm-1
-      input.form-control(type='text',
-        name='order_details[0][quantity]',
-        id='OrderDetail_quantity',
-        placeholder='Quantity')
-    div.col-sm-5
-      textarea.form-control(
-        name='order_details[0][note]',
-        id='Item_note',
-        placeholder='Note')
-  div.form-group
-    label.col-sm-2.control-label(for='OrderDetail_name') Item 2 
-    div.col-sm-4
-      input.form-control(type='text',
-        name='order_details[1][item_id]',
-        id='OrderDetail_name',
-        placeholder='Name')
-    div.col-sm-1
-      input.form-control(type='text',
-        name='order_details[1][quantity]',
-        id='OrderDetail_quantity',
-        placeholder='Quantity')
-    div.col-sm-5
-      textarea.form-control(
-        name='order_details[1][note]',
-        id='Item_note',
-        placeholder='Note')
+  div#items
+    div.form-group
+      label.col-sm-2.control-label(for='OrderDetail_name') Item 
+      div.col-sm-4
+        input.form-control(type='text',
+          name='order_details[0][item_code]',
+          id='OrderDetail_name',
+          placeholder='Item Code')
+      div.col-sm-1
+        input.form-control(type='text',
+          name='order_details[0][quantity]',
+          id='OrderDetail_quantity',
+          placeholder='Quantity')
+      div.col-sm-5
+        textarea.form-control(
+          name='order_details[0][note]',
+          id='Item_note',
+          placeholder='Note')
+    div.form-group
+      div.col-sm-2
+      div.col-sm-4
+        a.btn.btn-link#add-item='Add'
+  //
+    div.form-group
+      label.col-sm-2.control-label(for='OrderDetail_name') Item 2 
+      div.col-sm-4
+        input.form-control(type='text',
+          name='order_details[1][item_id]',
+          id='OrderDetail_name',
+          placeholder='Name')
+      div.col-sm-1
+        input.form-control(type='text',
+          name='order_details[1][quantity]',
+          id='OrderDetail_quantity',
+          placeholder='Quantity')
+      div.col-sm-5
+        textarea.form-control(
+          name='order_details[1][note]',
+          id='Item_note',
+          placeholder='Note')
   div.form-group
     label.col-sm-2.control-label(for='Order_note') Note
     div.col-sm-10

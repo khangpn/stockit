@@ -32,21 +32,22 @@ router.post('/create',
     var errors = [];
 
     var detailList = {};
-    var idList = [];
+    var codeList = [];
     for (var i = 0; i < orderDetails.length; i++) {
       var detail = orderDetails[i];
-      var itemId = parseInt(detail.item_id);
+      //var itemId = parseInt(detail.item_id);
+      var itemCode = detail.item_code;
       var quantity = parseInt(detail.quantity);
-      if (isNaN(itemId)) {
-        var errorItem = new Sequelize.ValidationErrorItem(
-          "The item Id is invalid",
-          "invalid format",
-          "item_id",
-          detail.item_id
-        );
-        errors.push(errorItem);
-        continue;
-      }
+      //if (isNaN(itemId)) {
+      //  var errorItem = new Sequelize.ValidationErrorItem(
+      //    "The item Id is invalid",
+      //    "invalid format",
+      //    "item_id",
+      //    detail.item_id
+      //  );
+      //  errors.push(errorItem);
+      //  continue;
+      //}
       if (isNaN(quantity)) {
         var errorItem = new Sequelize.ValidationErrorItem(
           "The quantity is invalid",
@@ -57,19 +58,19 @@ router.post('/create',
         errors.push(errorItem);
         continue;
       }
-      if (detailList[itemId] !== undefined) {
+      if (detailList[itemCode] !== undefined) {
         var errorItem = new Sequelize.ValidationErrorItem(
-          "The item Id is duplicated",
+          "The item Code is duplicated",
           "unique Violation",
-          "item_id",
-          detail.item_id
+          "item_code",
+          detail.item_code
         );
         errors.push(errorItem);
         continue;
       }
 
-      detailList[itemId] = {item_id: itemId, quantity: quantity, note:detail.note};
-      idList.push(itemId);
+      detailList[itemCode] = {item_id: null, item_code: itemCode, quantity: quantity, note:detail.note};
+      codeList.push(itemCode);
     }
 
     if (errors.length !==0) {
@@ -100,25 +101,25 @@ router.post('/create',
     }).then(function () {
       return Item.findAll({
         where: {
-          id: {
-            $in: idList
+          code: {
+            $in: codeList
           }
         }
       }).then(function(items) {
         if (items.length != orderDetails.length) {
           var errorItem = new Sequelize.ValidationErrorItem(
-            "The item IDs are invalid",
+            "The item codes are invalid",
             "invalid format",
-            "item_id",
-            idList
+            "item_code",
+            codeList
           );
           errors.push(errorItem);
-          throw_errors(errors); //report the item id
+          throw_errors(errors); //report the item code
         }
 
         for (var i=0; i<items.length; i++) {
           var item = items[i];
-          var detail = detailList[item.id];
+          var detail = detailList[item.code];
           if (item.in_stock < detail.quantity) {
             var errorItem = new Sequelize.ValidationErrorItem(
               "The number of item in stock is less than the order quantity",
@@ -133,7 +134,7 @@ router.post('/create',
         throw_errors(errors); //report the item quantity
 
         res.locals.items = items;
-        res.locals.id_list = idList;
+        res.locals.code_list = codeList;
         res.locals.details = detailList;
         next();
         return null;
@@ -146,7 +147,6 @@ router.post('/create',
   }, function(req, res, next) {
     var data = req.body;
     var items = res.locals.items;
-    var idList = res.locals.id_list;
     var details = res.locals.details;
     var account = res.locals.current_account;
 
@@ -164,9 +164,10 @@ router.post('/create',
 
     for (var i=0; i<items.length; i++) {
       var item = items[i];
-      var itemId = item.id;
-      var detail = details[itemId];
+      var itemCode = item.code;
+      var detail = details[itemCode];
 
+      detail.item_id = item.id;
       detail.price = item.price;
       detail.total_price = detail.price * detail.quantity;
       order.total_price += detail.total_price;
@@ -190,10 +191,10 @@ router.post('/create',
         var item = items[i];
         itemPromises.push(item.save());
       }
-      Promise.all(itemPromises).then(function (items) {
+      return Promise.all(itemPromises).then(function (items) {
         res.redirect("/orders/" + order.id);
+        return null;
       });
-      return null;
     }).catch(function (error) {
       res.render("create", {
         error: error
