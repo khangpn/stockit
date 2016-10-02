@@ -6,7 +6,9 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='/javascripts/jquery/dist/jquery.min.js')
     script(src='/bootstrap/js/bootstrap.min.js')
-  body
+    script(src='/javascripts/angular/angular.js')
+    script(src='/javascripts/app.js')
+  body(ng-app='stockit')
     //nav.navbar.navbar-default.navbar-fixed-top.bs-docs-nav
     header#top.navbar.navbar-static-top.navbar-default.bs-docs-nav(role="banner")
       div.container

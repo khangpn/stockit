@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var partials = express.Router();
 
 //------------------- Admin Section ----------------------
 router.get('/create', function(req, res, next) {
@@ -117,11 +118,12 @@ router.get('/', function(req, res, next) {
   var Item = req.models.item;
   Item.findAll()
     .then(function(items){
-        if (res.locals.isAdmin) {
-          return res.render("list_admin", {items: items});
-        } else {
-          return res.render("list", {items: items});
-        }
+        //if (res.locals.isAdmin) {
+        //  return res.render("list_admin", {items: items});
+        //} else {
+        //  return res.render("list", {items: items});
+        //}
+        return res.render("list", {items: items});
       }, 
       function(error){
         return next(error);
@@ -143,6 +145,15 @@ router.get('/:id', function (req, res, next) {
 //--------------------------------------------------------
 
 //----------------- Authenticated section --------------------
+//--------------------------------------------------------
+
+//----------------- Partials section --------------------
+partials.get('/:name', function (req, res) {
+  var name = req.params.name;
+  res.render('_' + name);
+});
+
+router.use('/partials', partials);
 //--------------------------------------------------------
 
 module.exports = router;
