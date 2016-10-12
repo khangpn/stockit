@@ -118,11 +118,6 @@ router.get('/', function(req, res, next) {
   var Item = req.models.item;
   Item.findAll()
     .then(function(items){
-        //if (res.locals.isAdmin) {
-        //  return res.render("list_admin", {items: items});
-        //} else {
-        //  return res.render("list", {items: items});
-        //}
         return res.render("list", {items: items});
       }, 
       function(error){
