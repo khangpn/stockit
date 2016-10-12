@@ -3,6 +3,26 @@ div.container
     div.panel-heading
       h3.panel-title Items List
     div.panel-body
+      div.row
+        label.col-sm-1.control-label(for='Item_search') Search
+        div.col-sm-3
+          input(type='text',
+            name='keyword',
+            id='Item_search',
+            placeholder='keyword',
+            ng-model="$ctrl.query")
+      div.row
+        label.col-sm-1.control-label(for='Item_sort') Sort
+        div.col-sm-3
+          select(name='keyword',
+            id='Item_sort',
+            ng-model="$ctrl.orderProp")
+
+            option(value="default", disabled) Order By
+            option(value="code") Code
+            option(value="name") Name
+            option(value="in_stock") In Stock
+            option(value="price") Price
       div.table-responsive
         table.table.table-hover
           thead
@@ -13,7 +33,7 @@ div.container
               th Price
               th In stock
           tbody
-            tr(ng-repeat="item in $ctrl.items")
+            tr(ng-repeat="item in $ctrl.items | filter:$ctrl.query | orderBy:$ctrl.orderProp")
               td {{item.id}}
               td
                 a(href='/items/' + "{{item.id}}") {{item.code}}
