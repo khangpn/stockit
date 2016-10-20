@@ -1,12 +1,13 @@
 div.container
+  ol.breadcrumb
+    li
+      a(href="#!/items") Items
+    li.active Detail
+  </ol>
   div.panel.panel-default
     div.panel-heading
-      h3.panel-title Profile
+      h3.panel-title {{$ctrl.item.name}}
     div.panel-body
-      div.row
-        label.col-md-1 Name:
-        div.col-md-11
-          = "{{$ctrl.item.name}}"
       div.row
         label.col-md-1 Code:
         div.col-md-11
