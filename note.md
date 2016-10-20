@@ -6,10 +6,14 @@
 # Technical notes:
 ## Angularjs:
 - If register controller to the app module directly using 
+
     var myApp = angular.module("myApp", []);
     myApp.controller("FirstController", function FirstController($scope) {...});
-  Then in the view, "ng-controller='FirstController'" must be defined on a tag to make it bound to the controller.
+
+  Then in the view, `ng-controller='FirstController'` must be defined on a tag to make it bound to the controller.
+
 - Otherwise, if register controller as the app COMPONENT
+
     // Assume this app definition is put separately in another file e.g app.js
     var myApp = angular.module("myApp", []); // define myApp
     
@@ -21,8 +25,9 @@
           this.items = [];
         }
       })
-  Then we don't have to add *ng-controller='FirstController'* on the view because it already know which TEMPLATE to bind to.
-  Adding "ng-controller='FirstController'" on the view again may cause "Argument 'FirstController' is not a function, got undefined" error
+
+  Then we don't have to add `ng-controller='FirstController'` on the view because it already know which TEMPLATE to bind to.
+  Adding `ng-controller='FirstController'` on the view again may cause "Argument 'FirstController' is not a function, got undefined" error
 
 ## Angularjs + Jade:
 - They can be used together
