@@ -18,7 +18,7 @@ div.container
       div.row
         label.col-md-1 In stock:
         div.col-md-11
-          = "{{$ctrl.item.in_stock > 0 ? 'yes' : 'no'}}"
+          = "{{$ctrl.item.in_stock | instock}}"
       div.row
         label.col-md-1 Description:
         div.col-md-11

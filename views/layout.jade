@@ -8,6 +8,8 @@ html
     script(src='/bootstrap/js/bootstrap.min.js')
     script(src='/javascripts/angular/angular.js')
     script(src='/javascripts/angular-route/angular-route.js')
+    script(src='/javascripts/core/core.module.js')
+    script(src='/javascripts/core/instock/instock.filter.js')
     script(src='/javascripts/app.js')
   body(ng-app='stockit')
     //nav.navbar.navbar-default.navbar-fixed-top.bs-docs-nav
@@ -27,7 +29,7 @@ html
           if authenticated
             ul.nav.navbar-nav
               li.dropdown
-                a.dropdown-toggle(href="#",
+                a.dropdown-toggle(href="",
                   data-toggle="dropdown",
                   role="button",
                   aria-haspopup="true",
@@ -44,7 +46,7 @@ html
                         | Create item
               if isAdmin
                 li.dropdown
-                  a.dropdown-toggle(href="#",
+                  a.dropdown-toggle(href="",
                     data-toggle="dropdown",
                     role="button",
                     aria-haspopup="true",
@@ -59,7 +61,7 @@ html
                       a(href="/accounts/admin/create")
                         | Create admin
                 li.dropdown
-                  a.dropdown-toggle(href="#",
+                  a.dropdown-toggle(href="",
                     data-toggle="dropdown",
                     role="button",
                     aria-haspopup="true",
@@ -74,7 +76,7 @@ html
                       a(href="/accounts/create")
                         | Create Customer
                 li.dropdown
-                  a.dropdown-toggle(href="#",
+                  a.dropdown-toggle(href="",
                     data-toggle="dropdown",
                     role="button",
                     aria-haspopup="true",
@@ -89,7 +91,7 @@ html
                       a(href="/accounts/admin/create")
                         | Create Admin
                 li.dropdown
-                  a.dropdown-toggle(href="#",
+                  a.dropdown-toggle(href="",
                     data-toggle="dropdown",
                     role="button",
                     aria-haspopup="true",
@@ -106,7 +108,7 @@ html
           ul.nav.navbar-nav.navbar-right
             if authenticated
               li.dropdown
-                a.dropdown-toggle(href="#",
+                a.dropdown-toggle(href="",
                   data-toggle="dropdown",
                   role="button",
                   aria-haspopup="true",
