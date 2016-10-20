@@ -23,6 +23,17 @@ api.get('/',
         return next(error);
     });
 });
+
+api.get('/:id', function (req, res, next) {
+  var Item = req.models.item;
+  Item.findById(req.params.id, {raw:true}).then(function(item) {
+      if (!item) return next(new Error("Can't find the item with id: " + req.params.id));
+      return res.json(item); 
+    }, 
+    function(error) {
+      return next(error);
+  });
+});
 //--------------------------------------------------------
 
 //------------------- Unauthorized Section ----------------------

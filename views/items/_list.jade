@@ -36,7 +36,7 @@ div.container
             tr(ng-repeat="item in $ctrl.items | filter:$ctrl.query | orderBy:$ctrl.orderProp")
               td {{item.id}}
               td
-                a(href='/items/' + "{{item.id}}") {{item.code}}
+                a(href='#!/items/' + "{{item.id}}") {{item.code}}
               td {{item.name}}
               td {{item.price}}
               td {{item.in_stock}}

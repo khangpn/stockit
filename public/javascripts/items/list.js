@@ -1,1 +1,1 @@
-angular.module("stockit", ["itemList"]);
+angular.module("stockit", ["ngRoute", "itemList", "itemDetail"]);

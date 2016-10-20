@@ -2,7 +2,10 @@ extends ../layout
 
 block content
   script(src='/javascripts/items/list.js')
+  script(src='/javascripts/items/list.config.js')
   script(src='/javascripts/items/item-list/item-list.module.js')
   script(src='/javascripts/items/item-list/item-list.component.js')
+  script(src='/javascripts/items/item-detail/item-detail.module.js')
+  script(src='/javascripts/items/item-detail/item-detail.component.js')
 
-  item-list
+  div(ng-view)
