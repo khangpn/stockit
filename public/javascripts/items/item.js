@@ -1,3 +1,8 @@
-angular.module("item", ["ngRoute", "itemList", "itemDetail", "core", "itemResource"]);
+angular.module("item", ["ngRoute", 
+"itemList", 
+"itemDetail", 
+"itemCreate", 
+"core", 
+"itemResource"]);
 
 angular.module("stockit", ["item"]);

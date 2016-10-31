@@ -145,7 +145,7 @@ router.get('/:id', function (req, res, next) {
 //----------------- Partials section --------------------
 partials.get('/:name', function (req, res) {
   var name = req.params.name;
-  res.render('_' + name);
+  res.render('partials/_' + name);
 });
 
 router.use('/partials', partials);

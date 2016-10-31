@@ -1,0 +1,4 @@
+div.row(ng-show="$ctrl.errors")
+  div.alert.alert-danger(role="alert")
+    ul(ng-repeat="error in $ctrl.errors")
+      li {{error.message}}

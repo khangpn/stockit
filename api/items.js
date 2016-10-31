@@ -7,7 +7,7 @@ var api = express.Router();
 //----------------- Authenticated section --------------------
 api.get('/',
   function(req, res, next) {
-    if (!res.locals.authenticated) {
+    if (!res.locals.authenticated || !res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
       err.status = 401;
       return next(err);
@@ -23,6 +23,29 @@ api.get('/',
         return next(error);
     });
 });
+
+api.post('/',
+  function(req, res, next) {
+    if (!res.locals.isAdmin) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
+    if (!req.body) return next(new Error('Cannot get the req.body'));
+
+    next();
+  }, function(req, res, next) {
+    var data = req.body;
+    var Item = req.models.item;
+
+    Item.create(data)
+      .then(function(item){
+        return res.json(item); 
+      }, function(error){
+        return res.status(400).json(error); 
+      });
+  }
+);
 
 api.get('/:id', function (req, res, next) {
   var Item = req.models.item;
