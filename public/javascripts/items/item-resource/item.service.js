@@ -1,5 +1,5 @@
 angular.
-  module('item').
+  module('itemResource').
   factory('Item', ['$resource',
     function($resource) {
       return $resource('/api/items/:id', {}, {});

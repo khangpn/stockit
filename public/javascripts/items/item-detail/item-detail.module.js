@@ -1,1 +1,1 @@
-angular.module('itemDetail', ['ngRoute', "item"]);
+angular.module('itemDetail', ['ngRoute', "itemResource"]);

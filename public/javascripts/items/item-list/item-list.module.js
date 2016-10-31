@@ -1,1 +1,1 @@
-angular.module('itemList', ['ngRoute', 'item']);
+angular.module('itemList', ['ngRoute', 'itemResource']);

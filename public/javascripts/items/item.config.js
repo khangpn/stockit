@@ -1,6 +1,6 @@
 angular.
   module("stockit").
-  config(['$locationProvider', '$routeProvider', //this is if we minify
+  config(['$locationProvider', '$routeProvider', 
     function config($locationProvider, $routeProvider) {
       $locationProvider.hashPrefix('!');
 
@@ -10,6 +10,9 @@ angular.
         }).
         when('/items/:itemId', {
           template: '<item-detail></item-detail>'
+        }).
+        when('/items/create', {
+          template: '<item-create></item-create>'
         }).
         otherwise('/items');
     }
