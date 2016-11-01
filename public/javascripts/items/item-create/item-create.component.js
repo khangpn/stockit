@@ -6,7 +6,6 @@ angular.
       function ItemCreateController($routeParams, $location, Item) {
         var self = this;
         this.create = function(item) {
-          console.log(item);
           var i= new Item(item);
           i.$save(
             function success(item, resHeader) {

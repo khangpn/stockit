@@ -2,13 +2,28 @@ angular.
   module('itemDetail').
   component('itemDetail', { 
     templateUrl: '/items/partials/detail',
-    controller: ['$routeParams', 'Item',
-      function ItemDetailController($routeParams, Item) {
-        var self = this;
-        self.item = Item.get({id:$routeParams.itemId}) ;
+    controller: ['$routeParams', '$location', 'Item',
+      function ItemDetailController($routeParams, $location, Item) {
+        this.item = Item.get({id:$routeParams.itemId}) ;
         //$http.get('/api/items/' + $routeParams.itemId).then(function(response) {
         //  self.item = response.data;
         //});
+
+        var self = this;
+        this.deleteItem = function() {
+          this.item.$delete(
+            function success(item, resHeader) {
+              $location.path('/');
+            }, 
+            function failure(response) {
+              self.errors = response.data.errors;
+            }
+          );
+        };
+
+        this.editItem = function() {
+          $location.path('/items/'+this.item.id+'/edit');
+        };
       }
     ]
   });

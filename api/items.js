@@ -47,6 +47,29 @@ api.post('/',
   }
 );
 
+api.delete('/:id',
+  function(req, res, next) {
+    if (!res.locals.isAdmin) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
+
+    next();
+  }, function(req, res, next) {
+    var Item = req.models.item;
+    Item.destroy({
+      where: { id: req.params.id }
+      })
+      .then(function(deleteds){
+          return res.json(deleteds); 
+        }, 
+        function(error){
+          return res.status(400).json(error); 
+      });
+  }
+);
+
 api.get('/:id', function (req, res, next) {
   var Item = req.models.item;
   Item.findById(req.params.id, {raw:true}).then(function(item) {

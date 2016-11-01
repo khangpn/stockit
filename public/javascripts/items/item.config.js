@@ -14,6 +14,9 @@ angular.
         when('/items/:itemId', {
           template: '<item-detail></item-detail>'
         }).
+        when('/items/:itemId/edit', {
+          template: '<item-edit></item-edit>'
+        }).
         otherwise('/items');
     }
   ])

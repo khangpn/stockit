@@ -30,10 +30,10 @@ div.container
             = "{{$ctrl.item.note}}"
         div.row
           div.col-sm-2
-            a.btn.btn-danger(href="/items/delete/" + "{{$ctrl.item.id}}",
+            a.btn.btn-danger(ng-click="$ctrl.deleteItem()",
               role="button")
               | Delete Item
           div.col-sm-2
-            a.btn.btn-primary(href="/items/edit/" + "{$ctrl.item.id}}",
+            a.btn.btn-primary(ng-click="$ctrl.editItem()",
               role="button")
               | Edit Item
