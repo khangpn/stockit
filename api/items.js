@@ -80,6 +80,32 @@ api.get('/:id', function (req, res, next) {
       return next(error);
   });
 });
+
+api.post('/:id',
+  function(req, res, next) {
+    if (!res.locals.isAdmin) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
+    if (!req.body) return next(new Error('Cannot get the req.body'));
+    next();
+  }, function(req, res, next) {
+    var data = req.body;
+    var Item = req.models.item;
+    Item.findById(data.id).then(function(item) {
+      if (!item) return next(new Error("Can't find the item with id: " + data.id));
+
+      item.update(data).then(function(item){
+        return res.json(item); 
+      }, function (error) {
+        return res.status(400).json(error); 
+      });
+    }, function(error) {
+      return res.status(400).json(error); 
+    });
+  }
+);
 //--------------------------------------------------------
 
 //------------------- Unauthorized Section ----------------------

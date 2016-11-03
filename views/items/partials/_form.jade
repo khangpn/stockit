@@ -1,4 +1,9 @@
 form.form-horizontal(name="item-form", novalidate)
+  div(ng-if="$ctrl.item.id")
+    input.form-control(type='hidden',
+      name='id',
+      id='item_id',
+      ng-model='$ctrl.item.id')
   div.form-group
     label.col-sm-2.control-label(for='item_name') Name
     div.col-sm-10
@@ -6,7 +11,7 @@ form.form-horizontal(name="item-form", novalidate)
         name='iName',
         id='item_name',
         placeholder='Name',
-        ng-model='item.name')
+        ng-model='$ctrl.item.name')
   div.form-group
     label.col-sm-2.control-label(for='item_code') Code
     div.col-sm-10
@@ -14,7 +19,7 @@ form.form-horizontal(name="item-form", novalidate)
         name='iCode',
         id='item_code',
         placeholder='Code',
-        ng-model='item.code')
+        ng-model='$ctrl.item.code')
   div.form-group
     label.col-sm-2.control-label(for='item_price') Price
     div.col-sm-10
@@ -22,7 +27,7 @@ form.form-horizontal(name="item-form", novalidate)
         name='iPrice',
         id='item_price',
         placeholder='Price',
-        ng-model='item.price')
+        ng-model='$ctrl.item.price')
   div.form-group
     label.col-sm-2.control-label(for='item_in_stock') In Stock
     div.col-sm-10
@@ -30,7 +35,7 @@ form.form-horizontal(name="item-form", novalidate)
         name='iInStock',
         id='item_in_stock',
         placeholder='In Stock',
-        ng-model='item.in_stock')
+        ng-model='$ctrl.item.in_stock')
   div.form-group
     label.col-sm-2.control-label(for='item_description') Description
     div.col-sm-10
@@ -38,7 +43,7 @@ form.form-horizontal(name="item-form", novalidate)
         name='iDescription',
         id='item_description',
         placeholder='Description'
-        ng-model='item.description')
+        ng-model='$ctrl.item.description')
   div.form-group
     label.col-sm-2.control-label(for='item_note') Note
     div.col-sm-10
@@ -46,8 +51,8 @@ form.form-horizontal(name="item-form", novalidate)
         name='iNote',
         id='item_note',
         placeholder='Note'
-        ng-model='item.note')
+        ng-model='$ctrl.item.note')
   div.form-group
     div.col-sm-offset-2.col-sm-10
-      input.btn.btn-default(type='submit', value='Submit',
-        ng-click="$ctrl.create(item)")
+      input.btn.btn-default(type='submit', value='Save',
+        ng-click="$ctrl.save($ctrl.item)")

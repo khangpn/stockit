@@ -1,13 +1,14 @@
 angular.
-  module('itemCreate').
-  component('itemCreate', { 
-    templateUrl: '/items/partials/create',
+  module('itemEdit').
+  component('itemEdit', { 
+    templateUrl: '/items/partials/edit',
     controller: ['$routeParams', '$location', 'Item',
-      function ItemCreateController($routeParams, $location, Item) {
+      function ItemEditController($routeParams, $location, Item) {
+        this.untouched = this.item = Item.get({id:$routeParams.itemId}) ;
+
         var self = this;
         this.save = function(item) {
-          var i= new Item(item);
-          i.$save(
+          item.$save(
             function success(item, resHeader) {
               $location.path('/');
             }, 
