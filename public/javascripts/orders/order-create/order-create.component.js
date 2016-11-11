@@ -27,14 +27,12 @@ angular.
 
         var self = this;
         this.save = function(order) {
-          console.log(order);
           var newOrder = new Order(order);
           newOrder.$save(
             function success(order, resHeader) {
               $location.path('/');
             }, 
             function failure(response) {
-              console.log(response);
               self.errors = response.data.errors;
             }
           );
