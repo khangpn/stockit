@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var partials = express.Router();
 
 //------------------- Admin Section ----------------------
 router.get('/create', function(req, res, next) {
@@ -344,7 +345,8 @@ router.post('/update',
 //--------------------------------------------------------
 
 //------------------- Unauthorized Section ----------------------
-router.get('/', function(req, res, next) {
+// Normal request
+router.get('/list', function(req, res, next) {
   var Order = req.models.order;
   Order.findAll()
     .then(function(orders){
@@ -353,10 +355,18 @@ router.get('/', function(req, res, next) {
         } else {
           return res.render("list", {orders: orders});
         }
-      }, 
-      function(error){
-        return next(error);
+    }).catch(function(error) {
+      return next(error);
     });
+});
+
+// Angular version, data will be loaded from client
+router.get('/', function(req, res, next) {
+  if (res.locals.isAdmin) {
+    return res.render("list_admin");
+  } else {
+    return res.render("list");
+  }
 });
 
 router.get('/:id', function (req, res, next) {
@@ -386,6 +396,15 @@ router.get('/:id', function (req, res, next) {
 //--------------------------------------------------------
 
 //----------------- Authenticated section --------------------
+//--------------------------------------------------------
+
+//----------------- Partials section --------------------
+partials.get('/:name', function (req, res) {
+  var name = req.params.name;
+  res.render('partials/_' + name);
+});
+
+router.use('/partials', partials);
 //--------------------------------------------------------
 
 module.exports = router;

@@ -1,21 +1,20 @@
 extends ../layout
 
 block content
-  div.panel.panel-default
-    div.panel-heading
-      h3.panel-title Orders List
-    div.panel-body
-      div.table-responsive
-        table.table.table-hover
-          thead
-            tr
-              th ID
-              th Total Price
-              th Date
-          tbody
-            for order in orders
-              tr
-                td
-                  a(href='/orders/' + order.id)=order.id
-                td=order.total_price
-                td=order.created_at
+  script(src='/javascripts/orders/order.js')
+  script(src='/javascripts/orders/order.config.js')
+  script(src='/javascripts/orders/order-list/order-list.module.js')
+  script(src='/javascripts/orders/order-list/order-list.component.js')
+  script(src='/javascripts/orders/order-detail/order-detail.module.js')
+  script(src='/javascripts/orders/order-detail/order-detail.component.js')
+  script(src='/javascripts/orders/order-create/order-create.module.js')
+  script(src='/javascripts/orders/order-create/order-create.component.js')
+  script(src='/javascripts/orders/order-edit/order-edit.module.js')
+  script(src='/javascripts/orders/order-edit/order-edit.component.js')
+  script(src='/javascripts/orders/order-resource/order.module.js')
+  script(src='/javascripts/orders/order-resource/order.service.js')
+  script(src='/javascripts/core/instock/instock.filter.js')
+  script(src='/javascripts/core/delete-confirm/delete-confirm.directive.js')
+
+  div(ng-view)
+
