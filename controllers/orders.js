@@ -362,11 +362,7 @@ router.get('/list', function(req, res, next) {
 
 // Angular version, data will be loaded from client
 router.get('/', function(req, res, next) {
-  if (res.locals.isAdmin) {
-    return res.render("list_admin");
-  } else {
-    return res.render("list");
-  }
+  return res.render("angular_list");
 });
 
 router.get('/:id', function (req, res, next) {

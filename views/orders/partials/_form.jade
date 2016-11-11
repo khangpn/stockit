@@ -1,0 +1,57 @@
+form.form-horizontal(name="order-form", novalidate)
+  div(ng-if="$ctrl.order.id")
+    input.form-control(type='hidden',
+      id='order_id',
+      ng-model='$ctrl.order.id')
+  div.form-group
+    label.col-sm-2.control-label(for='Order_customer_id') Customer
+    div.col-sm-4
+      input.form-control(type='text',
+        id='Order_customer_name',
+        placeholder='Customer ID',
+        ng-model='$ctrl.order.customer_id')
+  div(ng-repeat="entry in $ctrl.order.order_details")
+    div.form-group
+      label.col-sm-2.control-label(for='OrderDetail_name') Item {{$index+1}}
+      div.col-sm-3
+        input.form-control(type='text',
+          id='OrderDetail_name',
+          placeholder='Item Code',
+          ng-model='entry.item_code')
+      div.col-sm-1
+        input.form-control(type='number',
+          id='OrderDetail_quantity',
+          placeholder='Quantity',
+          ng-model='entry.quantity')
+      div.col-sm-5
+        textarea.form-control(
+          id='OrderDetail_note',
+          placeholder='Note',
+          ng-model='entry.note')
+      div.col-sm-1
+        button.btn.btn-default(
+          type="button", 
+          aria-label="Left Align",
+          ng-click="$ctrl.removeItem(entry)"
+        )
+          span.glyphicon.glyphicon-minus(aria-hidden="true")
+  div.form-group
+    div.col-sm-2
+    div.col-sm-4
+      button.btn.btn-default(
+        type="button", 
+        aria-label="Left Align",
+        ng-click="$ctrl.addItem()"
+      )
+        span.glyphicon.glyphicon-plus(aria-hidden="true")
+  div.form-group
+    label.col-sm-2.control-label(for='Order_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        id='Order_note',
+        placeholder='Note',
+        ng-model='$ctrl.order.note')
+  div.form-group
+    div.col-sm-offset-2.col-sm-10
+      input.btn.btn-default(type='submit', value='Save',
+        ng-click="$ctrl.save($ctrl.order)")
