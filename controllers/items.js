@@ -114,7 +114,8 @@ router.post('/update',
 //--------------------------------------------------------
 
 //------------------- Unauthorized Section ----------------------
-router.get('/', function(req, res, next) {
+//Normal request
+router.get('/list', function(req, res, next) {
   var Item = req.models.item;
   Item.findAll()
     .then(function(items){
@@ -123,6 +124,11 @@ router.get('/', function(req, res, next) {
       function(error){
         return next(error);
     });
+});
+
+//Angular app
+router.get('/', function(req, res, next) {
+  return res.render("angular_index");
 });
 
 router.get('/:id', function (req, res, next) {
