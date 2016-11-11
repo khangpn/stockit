@@ -1,3 +1,4 @@
+include ../../_delete_dialog
 div.container
   ol.breadcrumb
     li
@@ -30,7 +31,11 @@ div.container
             = "{{$ctrl.item.note}}"
         div.row
           div.col-sm-2
-            a.btn.btn-danger(ng-click="$ctrl.deleteItem()",
+            //a.btn.btn-danger(ng-click="$ctrl.deleteItem()",
+            //  role="button")
+            a.btn.btn-danger(delete-confirm,
+              object-type="items",
+              object-id="{{$ctrl.item.id}}",
               role="button")
               | Delete Item
           div.col-sm-2

@@ -9,17 +9,18 @@ angular.
         //  self.item = response.data;
         //});
 
-        var self = this;
-        this.deleteItem = function() {
-          this.item.$delete(
-            function success(item, resHeader) {
-              $location.path('/');
-            }, 
-            function failure(response) {
-              self.errors = response.data.errors;
-            }
-          );
-        };
+        //Deletting is handled in core/delete-confirm
+        //var self = this;
+        //this.deleteItem = function() {
+        //  self.item.$delete(
+        //    function success(item, resHeader) {
+        //      $location.path('/');
+        //    }, 
+        //    function failure(response) {
+        //      self.errors = response.data.errors;
+        //    }
+        //  );
+        //};
 
         this.editItem = function() {
           $location.path('/items/'+this.item.id+'/edit');
