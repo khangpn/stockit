@@ -1,19 +1,25 @@
 extends ../layout
 
 block content
-  script(src='/javascripts/items/item.js')
-  script(src='/javascripts/items/item.config.js')
-  script(src='/javascripts/items/item-list/item-list.module.js')
-  script(src='/javascripts/items/item-list/item-list.component.js')
-  script(src='/javascripts/items/item-detail/item-detail.module.js')
-  script(src='/javascripts/items/item-detail/item-detail.component.js')
-  script(src='/javascripts/items/item-create/item-create.module.js')
-  script(src='/javascripts/items/item-create/item-create.component.js')
-  script(src='/javascripts/items/item-edit/item-edit.module.js')
-  script(src='/javascripts/items/item-edit/item-edit.component.js')
-  script(src='/javascripts/items/item-resource/item.module.js')
-  script(src='/javascripts/items/item-resource/item.service.js')
-  script(src='/javascripts/core/instock/instock.filter.js')
-  script(src='/javascripts/core/delete-confirm/delete-confirm.directive.js')
-
-  div(ng-view)
+  div.panel.panel-default
+    div.panel-heading
+      h3.panel-title Items List
+    div.panel-body
+      div.table-responsive
+        table.table.table-hover
+          thead
+            tr
+              th ID
+              th Code
+              th Name
+              th Price
+              th In stock
+          tbody
+            for item in items
+              tr
+                td=item.id
+                td
+                  a(href='/items/' + item.id)=item.code
+                td=item.name
+                td=item.price
+                td=item.in_stock
