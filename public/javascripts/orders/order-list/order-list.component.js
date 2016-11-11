@@ -4,7 +4,7 @@ angular.
     templateUrl: '/orders/partials/list',
     controller: ['Order',
       function OrderListController(Order) {
-        this.orderProp = 'default';
+        this.orderProp = '-id';
         this.orders = Order.query();
       }
     ]
