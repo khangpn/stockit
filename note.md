@@ -23,6 +23,24 @@
       })
   Then we don't have to add *ng-controller='FirstController'* on the view because it already know which TEMPLATE to bind to.
   Adding "ng-controller='FirstController'" on the view again may cause "Argument 'FirstController' is not a function, got undefined" error
+- In order to use `Directive` isolated scope, the attribute name on the view should be `sandwitch` style
+    a.btn.btn-danger(delete-confirm,
+      object-type="items",
+      object-id="{{$ctrl.item.id}}",
+      role="button")
+      | Delete Item
+
+  In delete-confirm.directive.js
+    angular.
+      module('core').
+      directive('deleteConfirm', ['$http', '$location', function($http, $location) {
+        return {
+          restrict: 'A',
+          scope: {
+            objectId: "@", //Read https://docs.angularjs.org/guide/directive
+            objectType: "@"
+          },
+          link: function (scope, elem, attr) {
 
 ## Angularjs + Jade:
 - They can be used together
