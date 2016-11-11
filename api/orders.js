@@ -268,12 +268,13 @@ api.get('/:id',
     return Order.findById(req.params.id, {
       include: [Customer]
     }).then(function(order) {
-        if (!order) return next(new Error("Can't find the order with id: " + req.params.id));
+        if (!order) {
+          return res.status(404).json({errors:[{message: "Can't find the order with id: " + req.params.id}]}); 
+        }
         order.getOrder_details({
           include: [Item]
         }).then(function (details) {
-          order.details = details;
-          return res.json(order); 
+          return res.json({order:order, details:details}); 
         }).catch(function(error) {
           return next(error);
         });
