@@ -21,10 +21,16 @@ div.container
                 ng-model="$ctrl.orderProp")
 
                 option(value="default", disabled) Order By
+                option(value="id") ID
                 option(value="code") Code
                 option(value="name") Name
                 option(value="in_stock") In Stock
                 option(value="price") Price
+                option(value="-id") Decending ID
+                option(value="-code") Decending Code
+                option(value="-name") Decending Name
+                option(value="-in_stock") Decending In Stock
+                option(value="-price") Decending Price
           div.table-responsive
             table.table.table-hover
               thead
