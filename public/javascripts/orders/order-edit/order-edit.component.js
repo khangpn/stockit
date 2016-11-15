@@ -10,7 +10,7 @@ angular.
         this.save = function(order) {
           order.$save(
             function success(order, resHeader) {
-              $location.path('/');
+              $location.path('/orders/' + order.id);
             }, 
             function failure(response) {
               self.errors = response.data.errors;

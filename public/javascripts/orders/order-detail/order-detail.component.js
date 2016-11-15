@@ -5,12 +5,7 @@ angular.
     controller: ['$routeParams', '$location', 'Order',
       function OrderDetailController($routeParams, $location, Order) {
         var self = this;
-        Order.get({id:$routeParams.orderId}, 
-          function success(data) {
-            self.order = data.order;
-            self.details = data.details;
-          }
-        ) ;
+        this.order = Order.get({id:$routeParams.orderId}) ;
 
         this.editOrder = function() {
           $location.path('/orders/'+this.order.id+'/edit');

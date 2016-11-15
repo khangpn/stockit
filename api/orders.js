@@ -274,7 +274,9 @@ api.get('/:id',
         order.getOrder_details({
           include: [Item]
         }).then(function (details) {
-          return res.json({order:order, details:details}); 
+          var returnedData = order.toJSON();
+          returnedData.details = details;
+          return res.json(returnedData); 
         }).catch(function(error) {
           return next(error);
         });

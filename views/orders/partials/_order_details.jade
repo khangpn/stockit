@@ -1,5 +1,5 @@
 div.panel.panel-default
-  div(ng-if="$ctrl.details && $ctrl.details.length > 0")
+  div(ng-if="$ctrl.order.details && $ctrl.order.details.length > 0")
     div.panel-heading
       h3.panel-title Details
     div.panel-body
@@ -13,12 +13,12 @@ div.panel.panel-default
               th Quantity
               th Total
           tbody
-            tr(ng-repeat="detail in $ctrl.details")
+            tr(ng-repeat="detail in $ctrl.order.details")
               td
                 a(href='/items/' + "{{detail.item.id}}") {{detail.item.code}}
               td {{detail.item.name}}
               td {{detail.price}}
               td {{detail.quantity}}
               td {{detail.quantity * detail.price}}
-  div(ng-if="!$ctrl.details || $ctrl.details.length == 0")
+  div(ng-if="!$ctrl.order.details || $ctrl.order.details.length == 0")
     ="This order is empty"
