@@ -39,7 +39,7 @@ div.container
                   td
                     a(href='#!/accounts/' + "{{account.id}}") {{account.id}}
                   td {{account.email}}
-                  td {{account.is_admin}}
+                  td {{account.is_admin | istrue}}
     div.col-md-2
       div.panel.panel-default
         div.panel-body
