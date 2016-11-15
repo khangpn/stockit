@@ -1,6 +1,10 @@
-extends ../layout
+include ../../_delete_dialog
 
-block content
+div.container
+  ol.breadcrumb
+    li
+      a(href="#!/orders") Orders
+    li.active Detail
   div.panel.panel-default
     div.panel-heading
       h3.panel-title Order Info
@@ -8,34 +12,36 @@ block content
       div.row
         label.col-md-1 ID:
         div.col-md-11
-          = order.id
+          = "{{$ctrl.order.id}}"
       div.row
         label.col-md-1 Total price:
         div.col-md-11
-          = order.total_price
+          = "{{$ctrl.order.total_price}}"
       div.row
         label.col-md-1 Note:
         div.col-md-11
-          = order.note
+          = "{{$ctrl.order.note}}"
       div.row
         label.col-md-1 Created:
         div.col-md-4
-          = order.created_at
+          = "{{$ctrl.order.created_at}}"
         label.col-md-1 Updated:
         div.col-md-4
-          = order.updated_at
+          = "{{$ctrl.order.updated_at}}"
       div.row
         label.col-md-1 Customer:
         div.col-md-11
-          a(href='/customers/' + order.customer_id)=order.customer.fullname
+          a(href='/customers/' + "{{$ctrl.order.customer_id}}")="{{$ctrl.order.customer.fullname}}"
       if isAdmin
         div.row
           div.col-sm-2
-            a.btn.btn-danger(href="/orders/delete/" + order.id,
+            a.btn.btn-danger(delete-confirm,
+              object-type="orders",
+              object-id="{{$ctrl.order.id}}",
               role="button")
-              | Delete order
+              | Delete Order
           div.col-sm-2
-            a.btn.btn-primary(href="/orders/edit/" + order.id,
+            a.btn.btn-primary(ng-click="$ctrl.editOrder()",
               role="button")
-              | Edit order
+              | Edit Order
   include ./_order_details.jade

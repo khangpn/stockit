@@ -1,0 +1,49 @@
+div.container
+  div.row
+    div.col-md-10
+      div.panel.panel-default
+        div.panel-heading
+          h3.panel-title Orders List
+        div.panel-body
+          div.row
+            label.col-sm-1.control-label(for='Order_search') Search
+            div.col-sm-3
+              input(type='text',
+                name='keyword',
+                id='Order_search',
+                placeholder='keyword',
+                ng-model="$ctrl.query")
+          div.row
+            label.col-sm-1.control-label(for='Order_sort') Sort
+            div.col-sm-3
+              select(name='keyword',
+                id='Order_sort',
+                ng-model="$ctrl.orderProp")
+
+                option(value="default", disabled) Order By
+                option(value="id") ID
+                option(value="price") Price
+                option(value="date") Date
+                option(value="-id") Decending ID
+                option(value="-total_price") Decending Price
+                option(value="-date") Decending Date
+          div.table-responsive
+            table.table.table-hover
+              thead
+                tr
+                  th ID
+                  th Total Price
+                  th Date
+              tbody
+                tr(ng-repeat="order in $ctrl.orders | filter:$ctrl.query | orderBy:$ctrl.orderProp")
+                  td
+                    a(href='#!/orders/' + "{{order.id}}") {{order.id}}
+                  td {{order.total_price}}
+                  td {{order.created_at}}
+    div.col-md-2
+      div.panel.panel-default
+        div.panel-body
+          div.row
+            ul
+              li
+                a(href='#!/orders/create') Create new order

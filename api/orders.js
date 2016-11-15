@@ -1,19 +1,26 @@
 var express = require('express');
-var router = express.Router();
-var partials = express.Router();
+var api = express.Router();
 
 //------------------- Admin Section ----------------------
-router.get('/create', function(req, res, next) {
-  if (!res.locals.isAdmin) {
-    var err = new Error('You are not permitted to access this!');
-    err.status = 401;
-    return next(err);
-  }
-
-  res.render("create");
+api.get('/',
+  function(req, res, next) {
+    if (!res.locals.authenticated || !res.locals.isAdmin) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
+    next();
+  }, function(req, res, next) {
+  var Order = req.models.order;
+  Order.findAll({raw:true})
+    .then(function(orders){
+      return res.json(orders);
+  }).catch(function (error) {
+    return next(error);
+  });
 });
 
-router.post('/create',
+api.post('/',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
@@ -39,16 +46,6 @@ router.post('/create',
       //var itemId = parseInt(detail.item_id);
       var itemCode = detail.item_code;
       var quantity = parseInt(detail.quantity);
-      //if (isNaN(itemId)) {
-      //  var errorItem = new Sequelize.ValidationErrorItem(
-      //    "The item Id is invalid",
-      //    "invalid format",
-      //    "item_id",
-      //    detail.item_id
-      //  );
-      //  errors.push(errorItem);
-      //  continue;
-      //}
       if (isNaN(quantity)) {
         var errorItem = new Sequelize.ValidationErrorItem(
           "The quantity is invalid",
@@ -74,18 +71,13 @@ router.post('/create',
       codeList.push(itemCode);
     }
 
-    if (errors.length !==0) {
-      return res.render("create", {
-        error: new Sequelize.ValidationError("The input is invalid", errors)
-      });
-    }
-
     // used for promises to throw error to the "catch"
     var throw_errors = function(errors) {
       if (errors.length !==0) {
         throw new Sequelize.ValidationError("The input is invalid", errors);
       }
     }
+    throw_errors(errors); 
 
     var customerId = data.customer_id;
     Customer.findById(customerId).then(function(customer) {
@@ -141,9 +133,7 @@ router.post('/create',
         return null;
       });
     }).catch(function (error) {
-      res.render("create", {
-        error: error
-      });
+      return res.status(400).json(error); 
     });
   }, function(req, res, next) {
     var data = req.body;
@@ -193,83 +183,15 @@ router.post('/create',
         itemPromises.push(item.save());
       }
       return Promise.all(itemPromises).then(function (items) {
-        res.redirect("/orders/" + order.id);
-        return null;
+        return res.status(201).json(order); 
       });
     }).catch(function (error) {
-      res.render("create", {
-        error: error
-      });
+      return res.status(400).json(error); 
     });
-
-    /*Another way to do this task for reference*/
-    //var Item = req.models.order;
-    //var order = {
-    //  account_id: account.id,
-    //  customer_id: data.customer_id,
-    //  total_price: 0,
-    //  note: data.note
-    //};
-
-    //return Order.create(order).then(function(order) {
-    //  var itemPromises = [];
-    //  var detailArray = [];
-    //  for (var i=0; i<items.length; i++) {
-    //    var item = items[i];
-    //    var itemId = item.id;
-    //    var detail = details[itemId];
-
-    //    detail.price = item.price;
-    //    detail.total_price = detail.price * detail.quantity;
-    //    order.total_price += detail.total_price;
-
-    //    detail.order_id = order.id;
-
-    //    item.in_stock -= detail.quantity;
-    //    itemPromises.push(item.save());
-    //    detailArray.push(detail);
-    //  }
-    //  
-    //  return OrderDetail.bulkCreate(detailArray, {
-    //    validate: true
-    //  }).then(function () {
-    //    return order.getDetails().then(
-    //      function(orderDetails) {
-    //        for (var i = 0; i < orderDetails.length; i++) {
-    //          var orderDetail = orderDetails[i];
-    //          order.addPrice(orderDetail.price);
-    //        }
-    //        return order.save();
-    //      }
-    //    ).then(function (order) {
-    //      var Sequelize = req.models.Sequelize;
-    //      var Promise = Sequelize.Promise;
-
-    //      Promise.all(itemPromises).then(function (items) {
-    //        res.redirect("/orders/" + order.id);
-    //      }).catch(function (error) {
-    //        res.render("create", {
-    //          error: error
-    //        });
-    //      });
-    //      return null;
-    //    }).catch(function (error) {
-    //      next(error);
-    //    });
-    //  }).catch(function (error) {
-    //    res.render("create", {
-    //      error: error
-    //    });
-    //  });
-    //}).catch(function (error) {
-    //  res.render("create", {
-    //    error: error
-    //  });
-    //});
   }
 );
 
-router.get('/delete/:id',
+api.delete('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
@@ -284,37 +206,15 @@ router.get('/delete/:id',
       where: { id: req.params.id }
       })
       .then(function(deleteds){
-          res.redirect("/orders");
+          return res.json(deleteds); 
         }, 
         function(error){
-          return next(error);
+          return res.status(400).json(error); 
       });
   }
 );
 
-router.get('/edit/:id',
-  function(req, res, next) {
-    if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
-    }
-    next();
-  }, function(req, res, next) {
-    var Order = req.models.order;
-    Order.findById(req.params.id).then(function(order) {
-        if (!order) return next(new Error("Can't find the order with id: " + req.params.id));
-        return res.render('edit', {
-          order: order
-        }); 
-      }, 
-      function(error) {
-        return next(error);
-    });
-  }
-);
-
-router.post('/update',
+api.post('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
@@ -329,78 +229,68 @@ router.post('/update',
     Order.findById(data.id).then(function(order) {
       if (!order) return next(new Error("Can't find the order with id: " + data.id));
 
-      return order.update(data).then(function(order){
-        return res.redirect("/orders/" + order.id);
+      order.update(data).then(function(order){
+        return res.json(order); 
       }, function (error) {
-        return res.render('edit', {
-          order: order,
-          error: error
-        }); 
+        return res.status(400).json(error); 
       });
     }, function(error) {
+      return res.status(400).json(error); 
+    });
+  }
+);
+
+// Load an order's order_details
+//api.get('/:id/details', 
+//  function(req, res, next) {
+//    if (!res.locals.authenticated || !res.locals.isAdmin) {
+//      var err = new Error('You are not permitted to access this!');
+//      err.status = 401;
+//      return next(err);
+//    }
+//    next();
+//  }, function(req, res, next) {
+//  }
+//);
+
+api.get('/:id', 
+  function(req, res, next) {
+    if (!res.locals.authenticated || !res.locals.isAdmin) {
+      var err = new Error('You are not permitted to access this!');
+      err.status = 401;
+      return next(err);
+    }
+    next();
+  }, function(req, res, next) {
+    var Order = req.models.order;
+    var Item = req.models.item;
+    var Customer = req.models.customer;
+    return Order.findById(req.params.id, {
+      include: [Customer]
+    }).then(function(order) {
+        if (!order) {
+          return res.status(404).json({errors:[{message: "Can't find the order with id: " + req.params.id}]}); 
+        }
+        order.getOrder_details({
+          include: [Item]
+        }).then(function (details) {
+          var returnedData = order.toJSON();
+          returnedData.details = details;
+          return res.json(returnedData); 
+        }).catch(function(error) {
+          return next(error);
+        });
+        return null; //either return the getOrder_details promise or null will stop the promise warning
+    }).catch(function (error) {
       return next(error);
     });
   }
 );
 //--------------------------------------------------------
 
-//------------------- Unauthorized Section ----------------------
-// Normal request
-router.get('/list', function(req, res, next) {
-  var Order = req.models.order;
-  Order.findAll()
-    .then(function(orders){
-        if (res.locals.isAdmin) {
-          return res.render("list_admin", {orders: orders});
-        } else {
-          return res.render("list", {orders: orders});
-        }
-    }).catch(function(error) {
-      return next(error);
-    });
-});
-
-// Angular version, data will be loaded from client
-router.get('/', function(req, res, next) {
-  return res.render("angular_list");
-});
-
-router.get('/:id', function (req, res, next) {
-  var Order = req.models.order;
-  var Item = req.models.item;
-  var Customer = req.models.customer;
-  return Order.findById(req.params.id, {
-    include: [Customer]
-  }).then(function(order) {
-      if (!order) return next(new Error("Can't find the order with id: " + req.params.id));
-      order.getOrder_details({
-        include: [Item]
-      }).then(function (details) {
-        return res.render('view', {
-          order: order,
-          details: details
-        }); 
-      }).catch(function(error) {
-        return next(error);
-      });
-      return null; //either return the getOrder_details promise or null will stop the promise warning
-    }, 
-    function(error) {
-      return next(error);
-  });
-});
-//--------------------------------------------------------
-
 //----------------- Authenticated section --------------------
 //--------------------------------------------------------
 
-//----------------- Partials section --------------------
-partials.get('/:name', function (req, res) {
-  var name = req.params.name;
-  res.render('partials/_' + name);
-});
-
-router.use('/partials', partials);
+//------------------- Unauthorized Section ----------------------
 //--------------------------------------------------------
-
-module.exports = router;
+module.exports = api;

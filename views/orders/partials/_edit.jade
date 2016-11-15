@@ -1,0 +1,24 @@
+div.container
+  ol.breadcrumb
+    li
+      a(href="#!/orders") Orders
+    li
+      a(href="#!/orders/{{$ctrl.order.id}}") {{$ctrl.order.id}}
+    li.active Edit
+  div.panel.panel-default
+    div.panel-heading
+      h3 Edit Order
+    div.panel-body
+      include ../../_ng_error_list.jade
+      form.form-horizontal(name="order-form", novalidate)
+        div.form-group
+          label.col-sm-2.control-label(for='Order_note') Note
+          div.col-sm-10
+            textarea.form-control(
+              id='Order_note',
+              placeholder='Note',
+              ng-model='$ctrl.order.note')
+        div.form-group
+          div.col-sm-offset-2.col-sm-10
+            input.btn.btn-default(type='submit', value='Save',
+              ng-click="$ctrl.save($ctrl.order)")
