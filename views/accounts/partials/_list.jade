@@ -1,0 +1,49 @@
+div.container
+  div.row
+    div.col-md-10
+      div.panel.panel-default
+        div.panel-heading
+          h3.panel-title Accounts List
+        div.panel-body
+          div.row
+            label.col-sm-1.control-label(for='Account_search') Search
+            div.col-sm-3
+              input(type='text',
+                name='keyword',
+                id='Account_search',
+                placeholder='keyword',
+                ng-model="$ctrl.query")
+          div.row
+            label.col-sm-1.control-label(for='Account_sort') Sort
+            div.col-sm-3
+              select(name='keyword',
+                id='Account_sort',
+                ng-model="$ctrl.orderProp")
+
+                option(value="default", disabled) Order By
+                option(value="id") ID
+                option(value="email") Email
+                option(value="is_admin") Is admin?
+                option(value="-id") Decending ID
+                option(value="-email") Decending Email
+                option(value="-is_admin") Decending Is admin?
+          div.table-responsive
+            table.table.table-hover
+              thead
+                tr
+                  th ID
+                  th Email
+                  th Is admin?
+              tbody
+                tr(ng-repeat="account in $ctrl.accounts | filter:$ctrl.query | orderBy:$ctrl.orderProp")
+                  td
+                    a(href='#!/accounts/' + "{{account.id}}") {{account.id}}
+                  td {{account.email}}
+                  td {{account.is_admin}}
+    div.col-md-2
+      div.panel.panel-default
+        div.panel-body
+          div.row
+            ul
+              li
+                a(href='#!/accounts/create') Create new account

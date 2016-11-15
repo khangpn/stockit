@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var partials = express.Router();
 
 //------------------- Unauthorized Section ----------------------
 router.get('/create', function(req, res, next) {
@@ -134,7 +135,13 @@ router.post('/admin/create',
   }
 );
 
+//Angular app
 router.get('/', function(req, res, next) {
+  return res.render("angular_index");
+});
+
+//Normal request
+router.get('/list', function(req, res, next) {
   if (!res.locals.isAdmin) {
     var err = new Error('You are not permitted to access this!');
     err.status = 401;
@@ -278,6 +285,15 @@ router.get('/:id', function (req, res, next) {
       return next(error);
   });
 });
+//--------------------------------------------------------
+
+//----------------- Partials section --------------------
+partials.get('/:name', function (req, res) {
+  var name = req.params.name;
+  res.render('partials/_' + name);
+});
+
+router.use('/partials', partials);
 //--------------------------------------------------------
 
 module.exports = router;

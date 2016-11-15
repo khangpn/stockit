@@ -1,0 +1,12 @@
+div.container
+  ol.breadcrumb
+    li
+      a(href="#!/items") Items
+    li.active Edit {{$ctrl.item.code}}
+  div.panel.panel-default
+    div.panel-heading
+      h3 Edit {{$ctrl.item.code}}
+    div.panel-body
+      include ../../_ng_error_list.jade
+      // creation form
+      include ./_form.jade
