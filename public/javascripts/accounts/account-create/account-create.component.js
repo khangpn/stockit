@@ -5,11 +5,11 @@ angular.
     controller: ['$routeParams', '$location', 'Account',
       function AccountCreateController($routeParams, $location, Account) {
         var self = this;
-        this.save = function(account) {
-          var i= new Account(account);
+        this.save = function(customer) {
+          var i= new Account(customer);
           i.$save(
-            function success(account, resHeader) {
-              $location.path('/');
+            function success(customer, resHeader) {
+              $location.path('/accounts/' + customer.account.id);
             }, 
             function failure(response) {
               console.log(response);

@@ -29,7 +29,6 @@ router.post('/create', function(req, res, next) {
   var Account = req.models.account;
   var Customer = req.models.customer;
 
-  console.log(data);
   return Customer.create(data, {
     include: [Account]
   })

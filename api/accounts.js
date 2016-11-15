@@ -25,7 +25,7 @@ api.get('/',
 
 api.post('/',
   function(req, res, next) {
-    if (!res.locals.isAdmin) {
+    if (res.locals.authenticated && !res.locals.isAdmin) {
       var err = new Error('You are not permitted to access this!');
       err.status = 401;
       return next(err);
@@ -35,14 +35,23 @@ api.post('/',
     next();
   }, function(req, res, next) {
     var data = req.body;
-    var Account = req.models.account;
+    data['account']['email'] = data['email'];
 
-    Account.create(data)
-      .then(function(account){
-        return res.json(account); 
-      }).catch( function(error){
-        return res.status(400).json(error); 
-      });
+    // This is because of the current sequelize version error.
+    // Unless we have this, it will add null to account_id, hence raise "can not be null" error because of our model definition.
+    data['account_id'] = 'tmp'; 
+
+    delete(data['account']['is_admin']);
+    var Account = req.models.account;
+    var Customer = req.models.customer;
+
+    return Customer.create(data, {
+      include: [Account]
+    }) .then(function(customer){
+      return res.json(customer); 
+    }).catch ( function(error){
+      return res.status(400).json(error); 
+    });
   }
 );
 
@@ -84,6 +93,7 @@ api.get('/:id',
       if (!account) return next(new Error("Can't find the account with id: " + req.params.id));
       var returnedAccount = account.toJSON();
       returnedAccount.is_owner = account.id == res.locals.current_account.id;
+      console.log(returnedAccount);
       return res.json(returnedAccount); 
     }).catch(function(error) {
       return next(error);
