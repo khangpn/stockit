@@ -17,10 +17,9 @@ api.get('/',
   var Account = req.models.account;
   Account.findAll({raw:true})
     .then(function(accounts){
-        return res.json(accounts);
-      }, 
-      function(error){
-        return next(error);
+      return res.json(accounts);
+    }).catch( function(error){
+      return next(error);
     });
 });
 
@@ -41,7 +40,7 @@ api.post('/',
     Account.create(data)
       .then(function(account){
         return res.json(account); 
-      }, function(error){
+      }).catch( function(error){
         return res.status(400).json(error); 
       });
   }
@@ -62,10 +61,9 @@ api.delete('/:id',
       where: { id: req.params.id }
       })
       .then(function(deleteds){
-          return res.json(deleteds); 
-        }, 
-        function(error){
-          return res.status(400).json(error); 
+        return res.json(deleteds); 
+      }).catch( function(error){
+        return res.status(400).json(error); 
       });
   }
 );
@@ -77,11 +75,16 @@ api.get('/:id',
       err.status = 401;
       return next(err);
     }
+    next();
   }, function (req, res, next) {
     var Account = req.models.account;
-    Account.findById(req.params.id, {}).then(function(account) {
+    Account.findById(req.params.id, {
+      include: [req.models.admin, req.models.customer]
+    }).then(function(account) {
       if (!account) return next(new Error("Can't find the account with id: " + req.params.id));
-      return res.json(account); 
+      var returnedAccount = account.toJSON();
+      returnedAccount.is_owner = account.id == res.locals.current_account.id;
+      return res.json(returnedAccount); 
     }).catch(function(error) {
       return next(error);
     });
@@ -107,7 +110,7 @@ api.post('/:id',
       }, function (error) {
         return res.status(400).json(error); 
       });
-    }, function(error) {
+    }).catch( function(error){
       return res.status(400).json(error); 
     });
   }
