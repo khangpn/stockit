@@ -1,6 +1,6 @@
 div.row(ng-show="$ctrl.error")
   div.alert.alert-danger(role="alert")
-    div.row(ng-show="$ctrl.error.message && $ctrl.error.errors.lenghth == 0")
-      | {{$ctrl.error.message}}
+    div(ng-show="$ctrl.error.msg")
+      | {{$ctrl.error.msg}}
     ul(ng-repeat="error in $ctrl.error.errors")
       li {{error.message}}

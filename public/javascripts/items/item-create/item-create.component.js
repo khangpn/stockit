@@ -13,6 +13,7 @@ angular.
             }, 
             function failure(response) {
               self.error = response.data;
+              self.error.status = response.status;
             }
           );
         };
