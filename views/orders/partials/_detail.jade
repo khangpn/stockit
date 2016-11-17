@@ -1,47 +1,48 @@
-include ../../_delete_dialog
-
 div.container
-  ol.breadcrumb
-    li
-      a(href="#!/orders") Orders
-    li.active Detail
-  div.panel.panel-default
-    div.panel-heading
-      h3.panel-title Order Info
-    div.panel-body
-      div.row
-        label.col-md-1 ID:
-        div.col-md-11
-          = "{{$ctrl.order.id}}"
-      div.row
-        label.col-md-1 Total price:
-        div.col-md-11
-          = "{{$ctrl.order.total_price}}"
-      div.row
-        label.col-md-1 Note:
-        div.col-md-11
-          = "{{$ctrl.order.note}}"
-      div.row
-        label.col-md-1 Created:
-        div.col-md-4
-          = "{{$ctrl.order.created_at}}"
-        label.col-md-1 Updated:
-        div.col-md-4
-          = "{{$ctrl.order.updated_at}}"
-      div.row
-        label.col-md-1 Customer:
-        div.col-md-11
-          a(href='/customers/' + "{{$ctrl.order.customer_id}}")="{{$ctrl.order.customer.fullname}}"
-      if isAdmin
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
+    include ../../_delete_dialog
+    ol.breadcrumb
+      li
+        a(href="#!/orders") Orders
+      li.active Detail
+    div.panel.panel-default
+      div.panel-heading
+        h3.panel-title Order Info
+      div.panel-body
         div.row
-          div.col-sm-2
-            a.btn.btn-danger(delete-confirm,
-              object-type="orders",
-              object-id="{{$ctrl.order.id}}",
-              role="button")
-              | Delete Order
-          div.col-sm-2
-            a.btn.btn-primary(ng-click="$ctrl.editOrder()",
-              role="button")
-              | Edit Order
-  include ./_order_details.jade
+          label.col-md-1 ID:
+          div.col-md-11
+            = "{{$ctrl.order.id}}"
+        div.row
+          label.col-md-1 Total price:
+          div.col-md-11
+            = "{{$ctrl.order.total_price}}"
+        div.row
+          label.col-md-1 Note:
+          div.col-md-11
+            = "{{$ctrl.order.note}}"
+        div.row
+          label.col-md-1 Created:
+          div.col-md-4
+            = "{{$ctrl.order.created_at}}"
+          label.col-md-1 Updated:
+          div.col-md-4
+            = "{{$ctrl.order.updated_at}}"
+        div.row
+          label.col-md-1 Customer:
+          div.col-md-11
+            a(href='/customers/' + "{{$ctrl.order.customer_id}}")="{{$ctrl.order.customer.fullname}}"
+        if isAdmin
+          div.row
+            div.col-sm-2
+              a.btn.btn-danger(delete-confirm,
+                object-type="orders",
+                object-id="{{$ctrl.order.id}}",
+                role="button")
+                | Delete Order
+            div.col-sm-2
+              a.btn.btn-primary(ng-click="$ctrl.editOrder()",
+                role="button")
+                | Edit Order
+    include ./_order_details.jade

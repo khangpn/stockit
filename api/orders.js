@@ -4,30 +4,30 @@ var api = express.Router();
 //------------------- Admin Section ----------------------
 api.get('/',
   function(req, res, next) {
-    if (!res.locals.authenticated || !res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
+    if (!res.locals.authenticated && !res.locals.isAdmin) {
+      return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     next();
   }, function(req, res, next) {
   var Order = req.models.order;
+
+  /*TODO: Should handle owner and admin scenario*/
   Order.findAll({raw:true})
     .then(function(orders){
       return res.json(orders);
   }).catch(function (error) {
-    return next(error);
+    return res.status(400).json(error); 
   });
 });
 
 api.post('/',
   function(req, res, next) {
-    if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
+    if (!res.locals.authenticated && !res.locals.isAdmin) {
+      return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
-    if (!req.body) return next(new Error('Cannot get the req.body'));
+    if (!req.body) {
+      return res.status(400).json({msg: 'Cannot get the req.body'}); 
+    }
 
     next();
   }, function(req, res, next) {
@@ -77,7 +77,6 @@ api.post('/',
         throw new Sequelize.ValidationError("The input is invalid", errors);
       }
     }
-    throw_errors(errors); 
 
     var customerId = data.customer_id;
     Customer.findById(customerId).then(function(customer) {
@@ -194,11 +193,8 @@ api.post('/',
 api.delete('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
+      return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
-
     next();
   }, function(req, res, next) {
     var Order = req.models.order;
@@ -206,10 +202,9 @@ api.delete('/:id',
       where: { id: req.params.id }
       })
       .then(function(deleteds){
-          return res.json(deleteds); 
-        }, 
-        function(error){
-          return res.status(400).json(error); 
+        return res.json(deleteds); 
+      }).catch(function(error){
+        return res.status(400).json(error); 
       });
   }
 );
@@ -217,17 +212,19 @@ api.delete('/:id',
 api.post('/:id',
   function(req, res, next) {
     if (!res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
+      return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
-    if (!req.body) return next(new Error('Cannot get the req.body'));
+    if (!req.body) {
+      return res.status(400).json({msg: 'Cannot get the req.body'}); 
+    }
     next();
   }, function(req, res, next) {
     var data = req.body;
     var Order = req.models.order;
     Order.findById(data.id).then(function(order) {
-      if (!order) return next(new Error("Can't find the order with id: " + data.id));
+      if (!order) {
+        return res.status(404).json({msg: "Can't find the order with id: " + data.id}); 
+      }
 
       order.update(data).then(function(order){
         return res.json(order); 
@@ -255,10 +252,9 @@ api.post('/:id',
 
 api.get('/:id', 
   function(req, res, next) {
-    if (!res.locals.authenticated || !res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
+    /*TODO: Handle owner and admin scenario*/
+    if (!res.locals.authenticated && !res.locals.isAdmin) {
+      return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     next();
   }, function(req, res, next) {
@@ -269,7 +265,7 @@ api.get('/:id',
       include: [Customer]
     }).then(function(order) {
         if (!order) {
-          return res.status(404).json({errors:[{message: "Can't find the order with id: " + req.params.id}]}); 
+          return res.status(404).json({msg: "Can't find the order with id: " + + req.params.id}); 
         }
         order.getOrder_details({
           include: [Item]
@@ -278,11 +274,11 @@ api.get('/:id',
           returnedData.details = details;
           return res.json(returnedData); 
         }).catch(function(error) {
-          return next(error);
+          return res.status(400).json(error); 
         });
         return null; //either return the getOrder_details promise or null will stop the promise warning
     }).catch(function (error) {
-      return next(error);
+      return res.status(400).json(error); 
     });
   }
 );

@@ -5,7 +5,14 @@ angular.
     controller: ['Order',
       function OrderListController(Order) {
         this.orderProp = '-id';
-        this.orders = Order.query();
+        var self = this;
+        this.orders = Order.query(
+          function success(order, resHeader) {}, 
+          function failure(response) {
+            self.error = response.data;
+            self.error.status = response.status;
+          }
+        );
       }
     ]
   });
