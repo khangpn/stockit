@@ -1,8 +1,10 @@
 div.container
   ol.breadcrumb
     li
-      a(href="#!/items") Items
-    li.active Edit {{$ctrl.item.code}}
+      a(href="#!/accounts") Account
+    li
+      a(href="#!/orders/{{$ctrl.customer.account.id}}") {{$ctrl.customer.account.email}}
+    li.active Edit {{$ctrl.account.email}}
   div.panel.panel-default
     div.panel-heading
       h3 Edit {{$ctrl.item.code}}
