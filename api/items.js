@@ -98,7 +98,7 @@ api.post('/:id',
     Item.findById(data.id)
       .then(function(item) {
         if (!item) {
-          return res.status(404).json({msg: "Can't find the item with id: " + req.params.id}); 
+          return res.status(404).json({msg: "Can't find the item with id: " + data.id}); 
         }
 
         item.update(data).then(function(item){

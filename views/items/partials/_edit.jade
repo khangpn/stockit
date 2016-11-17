@@ -2,7 +2,9 @@ div.container
   ol.breadcrumb
     li
       a(href="#!/items") Items
-    li.active Edit {{$ctrl.item.code}}
+    li
+      a(href="#!/items/{{$ctrl.item.id}}") {{$ctrl.item.code}}
+    li.active Edit 
   div.panel.panel-default
     div.panel-heading
       h3 Edit {{$ctrl.item.code}}
