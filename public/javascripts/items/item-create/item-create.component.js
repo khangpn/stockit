@@ -12,8 +12,7 @@ angular.
               $location.path('/');
             }, 
             function failure(response) {
-              console.log(response);
-              self.errors = response.data.errors;
+              self.error = response.data;
             }
           );
         };

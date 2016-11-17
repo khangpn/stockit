@@ -7,10 +7,8 @@ var api = express.Router();
 //----------------- Authenticated section --------------------
 api.get('/',
   function(req, res, next) {
-    if (!res.locals.authenticated || !res.locals.isAdmin) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
+    if (!res.locals.authenticated && !res.locals.isAdmin) {
+      return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     next();
   }, function(req, res, next) {
