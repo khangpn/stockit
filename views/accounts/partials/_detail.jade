@@ -5,7 +5,7 @@ div.container
       include ../../_delete_dialog
     ol.breadcrumb
       li
-        a(href="#!/items") Account 
+        a(href="#!/accounts") Account 
       li.active {{$ctrl.account.email}}
     div.panel.panel-default
       div.panel-heading
@@ -51,13 +51,13 @@ div.container
                 role="button")
                 | Delete Account
             div.col-sm-2
-              a.btn.btn-primary(ng-click="$ctrl.editItem()",
+              a.btn.btn-primary(ng-click="$ctrl.editAccount()",
                 role="button")
                 | Edit Account
           if !isAdmin
             div(ng-if="$ctrl.account.is_owner")
               div.col-sm-2
-                a.btn.btn-primary(ng-click="$ctrl.editItem()",
+                a.btn.btn-primary(ng-click="$ctrl.editAccount()",
                   role="button")
                   | Edit Account
           div(ng-if="$ctrl.account.is_owner")
