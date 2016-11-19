@@ -91,7 +91,7 @@ api.get('/:id',
       }
 
       var returnedCustomer = customer.toJSON();
-      returnedCustomer.is_owner = customer.id == res.locals.current_account.id;
+      returnedCustomer.is_owner = customer.account.id == res.locals.current_account.id;
       return res.json(returnedCustomer); 
     }).catch(function(error) {
       return next(error);

@@ -5,62 +5,52 @@ div.container
       include ../../_delete_dialog
     ol.breadcrumb
       li
-        a(href="#!/accounts") Account 
-      li.active {{$ctrl.account.email}}
+        a(href="#!/customers") Customer 
+      li.active {{$ctrl.customer.email}}
     div.panel.panel-default
       div.panel-heading
-        h3.panel-title {{$ctrl.account.email}}
+        h3.panel-title {{$ctrl.customer.email}}
       div.panel-body
         div.row
           label.col-md-1 Email:
           div.col-md-11
-            = "{{$ctrl.account.email}}"
-        div(ng-if="$ctrl.account.is_admin")
-          div.row
-            label.col-md-1 Fullname:
-            div.col-md-11
-              = "{{$ctrl.account.admin.fullname}}"
+            = "{{$ctrl.customer.email}}"
+        div.row
+          label.col-md-1 Fullname:
+          div.col-md-11
+            = "{{$ctrl.customer.fullname}}"
+        div.row
+          label.col-md-1 Phone:
+          div.col-md-11
+            = "{{$ctrl.customer.phone}}"
+        div.row
+          label.col-md-1 Address:
+          div.col-md-11
+            = "{{$ctrl.customer.address}}"
+        if isAdmin
           div.row
             label.col-md-1 Note:
             div.col-md-11
-              = "{{$ctrl.account.admin.note}}"
-        div(ng-if="!$ctrl.account.is_admin")
-          div.row
-            label.col-md-1 Fullname:
-            div.col-md-11
-              = "{{$ctrl.account.customer.fullname}}"
-          div.row
-            label.col-md-1 Phone:
-            div.col-md-11
-              = "{{$ctrl.account.customer.phone}}"
-          div.row
-            label.col-md-1 Address:
-            div.col-md-11
-              = "{{$ctrl.account.customer.address}}"
-          if isAdmin
-            div.row
-              label.col-md-1 Note:
-              div.col-md-11
-                = "{{$ctrl.account.customer.note}}"
+              = "{{$ctrl.customer.note}}"
         div.row
           if isAdmin
             div.col-sm-2
               a.btn.btn-danger(delete-confirm,
-                object-type="accounts",
-                object-id="{{$ctrl.account.id}}",
+                object-type="customers",
+                object-id="{{$ctrl.customer.id}}",
                 role="button")
-                | Delete Account
+                | Delete Customer
             div.col-sm-2
-              a.btn.btn-primary(ng-click="$ctrl.editAccount()",
+              a.btn.btn-primary(ng-click="$ctrl.editCustomer()",
                 role="button")
-                | Edit Account
+                | Edit Customer
           if !isAdmin
-            div(ng-if="$ctrl.account.is_owner")
+            div(ng-if="$ctrl.customer.is_owner")
               div.col-sm-2
-                a.btn.btn-primary(ng-click="$ctrl.editAccount()",
+                a.btn.btn-primary(ng-click="$ctrl.editCustomer()",
                   role="button")
-                  | Edit Account
-          div(ng-if="$ctrl.account.is_owner")
+                  | Edit Customer
+          div(ng-if="$ctrl.customer.is_owner")
             div.col-sm-2
               a.btn.btn-primary(ng-click="$ctrl.updatePassword()",
                 role="button")
