@@ -76,9 +76,7 @@ api.delete('/:id',
 api.get('/:id', 
   function (req, res, next) {
     if (!res.locals.authenticated) {
-      var err = new Error('You are not permitted to access this!');
-      err.status = 401;
-      return next(err);
+      return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     next();
   }, function (req, res, next) {

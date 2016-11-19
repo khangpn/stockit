@@ -5,7 +5,15 @@ angular.
     controller: ['Account',
       function AccountListController(Account) {
         this.orderProp = '-id';
-        this.accounts = Account.query();
+        var self = this;
+        this.accounts = Account.query(
+          function success(accounts, resHeader) {}, 
+          function failure(res) {
+            self.error = res.data;
+            self.error.status = res.status;
+            console.log(self.error);
+          }
+        );
       }
     ]
   });

@@ -1,7 +1,8 @@
 div.container
   include ../../_ng_error_list.jade
   div.row(ng-show="!$ctrl.error")
-    include ../../_delete_dialog
+    if isAdmin
+      include ../../_delete_dialog
     ol.breadcrumb
       li
         a(href="#!/items") Items
