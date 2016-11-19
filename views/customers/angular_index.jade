@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  script(src='/javascripts/customers/customer.js')
+  script(src='/javascripts/customers/customer.config.js')
+  script(src='/javascripts/customers/customer-list/customer-list.module.js')
+  script(src='/javascripts/customers/customer-list/customer-list.component.js')
+  script(src='/javascripts/customers/customer-detail/customer-detail.module.js')
+  script(src='/javascripts/customers/customer-detail/customer-detail.component.js')
+  script(src='/javascripts/customers/customer-create/customer-create.module.js')
+  script(src='/javascripts/customers/customer-create/customer-create.component.js')
+  script(src='/javascripts/customers/customer-edit/customer-edit.module.js')
+  script(src='/javascripts/customers/customer-edit/customer-edit.component.js')
+  script(src='/javascripts/customers/customer-resource/customer.module.js')
+  script(src='/javascripts/customers/customer-resource/customer.service.js')
+  script(src='/javascripts/core/istrue/istrue.filter.js')
+  script(src='/javascripts/core/delete-confirm/delete-confirm.directive.js')
+
+  div(ng-view)

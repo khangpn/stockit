@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var partials = express.Router();
 
 //------------------- Admin Section ----------------------
 router.get('/create', function(req, res, next) {
@@ -137,7 +138,13 @@ router.post('/update',
   }
 );
 
+//Angular app
 router.get('/', function(req, res, next) {
+  return res.render("angular_index");
+});
+
+//Normal request
+router.get('/list', function(req, res, next) {
   var Customer = req.models.customer;
   Customer.findAll()
     .then(function(customers){
@@ -166,6 +173,15 @@ router.get('/:id', function (req, res, next) {
 //--------------------------------------------------------
 
 //----------------- Authenticated section --------------------
+//--------------------------------------------------------
+
+//----------------- Partials section --------------------
+partials.get('/:name', function (req, res) {
+  var name = req.params.name;
+  res.render('partials/_' + name);
+});
+
+router.use('/partials', partials);
 //--------------------------------------------------------
 
 module.exports = router;

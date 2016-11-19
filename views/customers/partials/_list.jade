@@ -1,0 +1,55 @@
+div.container
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
+    div.col-md-10
+      div.panel.panel-default
+        div.panel-heading
+          h3.panel-title Customers List
+        div.panel-body
+          div.row
+            label.col-sm-1.control-label(for='Customer_search') Search
+            div.col-sm-3
+              input(type='text',
+                name='keyword',
+                id='Customer_search',
+                placeholder='keyword',
+                ng-model="$ctrl.query")
+          div.row
+            label.col-sm-1.control-label(for='Customer_sort') Sort
+            div.col-sm-3
+              select(name='keyword',
+                id='Customer_sort',
+                ng-model="$ctrl.orderProp")
+
+                option(value="default", disabled) Order By
+                option(value="id") ID
+                option(value="email") Email
+                option(value="fullname") Fullname
+                option(value="phone") Phone
+                option(value="-id") Decending ID
+                option(value="-email") Decending Email
+                option(value="-fullname") Decending Fullname
+                option(value="-phone") Decending Phone
+          div.table-responsive
+            table.table.table-hover
+              thead
+                tr
+                  th ID
+                  th Email
+                  th Fullname
+                  th Phone
+              tbody
+                tr(ng-repeat="customer in $ctrl.customers | filter:$ctrl.query | orderBy:$ctrl.orderProp")
+                  td
+                    a(href='#!/customers/' + "{{customer.id}}") {{customer.id}}
+                  td
+                    a(href='#!/customers/' + "{{customer.id}}") {{customer.email}}
+                  td {{customer.fullname}}
+                  td {{customer.phone}}
+    div.col-md-2
+      div.panel.panel-default
+        div.panel-body
+          div.row
+            ul
+              li
+                a(href='#!/customers/create') Create new customer

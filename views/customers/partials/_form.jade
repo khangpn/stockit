@@ -1,0 +1,67 @@
+form.form-horizontal(name="account-form", novalidate)
+  div(ng-if="$ctrl.customer.id")
+    input.form-control(type='hidden',
+      name='id',
+      id='account_id',
+      ng-model='$ctrl.customer.id')
+  div.form-group
+    label.col-sm-2.control-label(for='customer_email') Email
+    div.col-sm-10
+      input.form-control(type='email',
+        name='email',
+        id='customer_email',
+        placeholder='Email',
+        ng-model='$ctrl.customer.email')
+  div.form-group
+    label.col-sm-2.control-label(for='account_password') Password
+    div.col-sm-10
+      input.form-control(type='password',
+        name='account[password]',
+        id='account_password',
+        placeholder='Password',
+        ng-model='$ctrl.customer.account.password')
+  div.form-group
+    label.col-sm-2.control-label(for='account_password_confirm') Confirm Password
+    div.col-sm-10
+      input.form-control(type='password',
+        name='account[password_confirm]',
+        id='account_password_confirm',
+        placeholder='Confirm Password',
+        ng-model='$ctrl.customer.account.password_confirm')
+  div.form-group
+    label.col-sm-2.control-label(for='customer_fullname') Fullname
+    div.col-sm-10
+      input.form-control(type='text',
+        name='fullname',
+        id='customer_fullname',
+        placeholder='Fullname',
+        ng-model='$ctrl.customer.fullname')
+  div.form-group
+    label.col-sm-2.control-label(for='customer_address') Address
+    div.col-sm-10
+      textarea.form-control(
+        name='address',
+        id='customer_address',
+        placeholder='Address'
+        ng-model='$ctrl.customer.address')
+  div.form-group
+    label.col-sm-2.control-label(for='customer_phone') Phone
+    div.col-sm-10
+      input.form-control(type='phone',
+        name='phone',
+        id='customer_phone',
+        placeholder='Phone'
+        ng-model='$ctrl.customer.phone')
+  if isAdmin
+    div.form-group
+      label.col-sm-2.control-label(for='customer_note') Note
+      div.col-sm-10
+        textarea.form-control(
+          name='note',
+          id='Customer_note',
+          placeholder='Note',
+          ng-model='$ctrl.customer.note')
+  div.form-group
+    div.col-sm-offset-2.col-sm-10
+      input.btn.btn-default(type='submit', value='Save',
+        ng-click="$ctrl.save($ctrl.customer)")
