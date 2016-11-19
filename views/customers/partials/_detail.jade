@@ -36,8 +36,8 @@ div.container
           if isAdmin
             div.col-sm-2
               a.btn.btn-danger(delete-confirm,
-                object-type="customers",
-                object-id="{{$ctrl.customer.id}}",
+                object-type="accounts",
+                object-id="{{$ctrl.customer.account.id}}",
                 role="button")
                 | Delete Customer
             div.col-sm-2
