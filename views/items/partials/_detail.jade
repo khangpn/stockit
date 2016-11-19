@@ -1,44 +1,46 @@
-include ../../_delete_dialog
 div.container
-  ol.breadcrumb
-    li
-      a(href="#!/items") Items
-    li.active Detail
-  div.panel.panel-default
-    div.panel-heading
-      h3.panel-title {{$ctrl.item.name}}
-    div.panel-body
-      div.row
-        label.col-md-1 Code:
-        div.col-md-11
-          = "{{$ctrl.item.code}}"
-      div.row
-        label.col-md-1 Price:
-        div.col-md-11
-          = "{{$ctrl.item.price}}"
-      div.row
-        label.col-md-1 In stock:
-        div.col-md-11
-          = "{{$ctrl.item.in_stock | instock}}"
-      div.row
-        label.col-md-1 Description:
-        div.col-md-11
-          = "{{$ctrl.item.description}}"
-      if isAdmin
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
+    include ../../_delete_dialog
+    ol.breadcrumb
+      li
+        a(href="#!/items") Items
+      li.active Detail
+    div.panel.panel-default
+      div.panel-heading
+        h3.panel-title {{$ctrl.item.name}}
+      div.panel-body
         div.row
-          label.col-md-1 Note:
+          label.col-md-1 Code:
           div.col-md-11
-            = "{{$ctrl.item.note}}"
+            = "{{$ctrl.item.code}}"
         div.row
-          div.col-sm-2
-            //a.btn.btn-danger(ng-click="$ctrl.deleteItem()",
-            //  role="button")
-            a.btn.btn-danger(delete-confirm,
-              object-type="items",
-              object-id="{{$ctrl.item.id}}",
-              role="button")
-              | Delete Item
-          div.col-sm-2
-            a.btn.btn-primary(ng-click="$ctrl.editItem()",
-              role="button")
-              | Edit Item
+          label.col-md-1 Price:
+          div.col-md-11
+            = "{{$ctrl.item.price}}"
+        div.row
+          label.col-md-1 In stock:
+          div.col-md-11
+            = "{{$ctrl.item.in_stock | instock}}"
+        div.row
+          label.col-md-1 Description:
+          div.col-md-11
+            = "{{$ctrl.item.description}}"
+        if isAdmin
+          div.row
+            label.col-md-1 Note:
+            div.col-md-11
+              = "{{$ctrl.item.note}}"
+          div.row
+            div.col-sm-2
+              //a.btn.btn-danger(ng-click="$ctrl.deleteItem()",
+              //  role="button")
+              a.btn.btn-danger(delete-confirm,
+                object-type="items",
+                object-id="{{$ctrl.item.id}}",
+                role="button")
+                | Delete Item
+            div.col-sm-2
+              a.btn.btn-primary(ng-click="$ctrl.editItem()",
+                role="button")
+                | Edit Item

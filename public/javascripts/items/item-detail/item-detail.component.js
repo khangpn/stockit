@@ -4,7 +4,14 @@ angular.
     templateUrl: '/items/partials/detail',
     controller: ['$routeParams', '$location', 'Item',
       function ItemDetailController($routeParams, $location, Item) {
-        this.item = Item.get({id:$routeParams.itemId}) ;
+        var self = this;
+        this.item = Item.get({id:$routeParams.itemId},
+          function success(item, resHeader) {}, 
+          function failure(res) {
+            self.error = res.data;
+            self.error.status = res.status;
+          }
+        );
         //$http.get('/api/items/' + $routeParams.itemId).then(function(response) {
         //  self.item = response.data;
         //});

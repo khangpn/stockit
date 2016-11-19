@@ -1,5 +1,6 @@
 div.container
-  div.row
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
     div.col-md-10
       div.panel.panel-default
         div.panel-heading

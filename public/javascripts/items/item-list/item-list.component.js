@@ -10,7 +10,14 @@ angular.
         //$http.get('/api/items/').then(function(response) {
         //  self.items = response.data;
         //});
-        this.items = Item.query();
+        var self = this;
+        this.items = Item.query(
+          function success(items, resHeader) {}, 
+          function failure(res) {
+            self.error = res.data;
+            self.error.status = res.status;
+          }
+        );
       }
     ]
   });
