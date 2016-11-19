@@ -7,10 +7,10 @@ angular.
         this.orderProp = '-id';
         var self = this;
         this.orders = Order.query(
-          function success(order, resHeader) {}, 
-          function failure(response) {
-            self.error = response.data;
-            self.error.status = response.status;
+          function success(orders, resHeader) {}, 
+          function failure(res) {
+            self.error = res.data;
+            self.error.status = res.status;
           }
         );
       }

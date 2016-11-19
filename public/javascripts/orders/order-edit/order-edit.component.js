@@ -5,11 +5,11 @@ angular.
     controller: ['$routeParams', '$location', 'Order',
       function OrderEditController($routeParams, $location, Order) {
         var self = this;
-        this.order = Order.get({id:$routeParams.orderId}
+        this.order = Order.get({id:$routeParams.orderId},
           function success(order, resHeader) {}, 
-          function failure(response) {
-            self.error = response.data;
-            self.error.status = response.status;
+          function failure(res) {
+            self.error = res.data;
+            self.error.status = res.status;
           }
         );
 

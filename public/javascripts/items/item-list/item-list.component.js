@@ -12,8 +12,8 @@ angular.
         //});
         var self = this;
         this.items = Item.query(
-          function success(item, resHeader) {}, 
-          function error(res) {
+          function success(items, resHeader) {}, 
+          function failure(res) {
             self.error = res.data;
             self.error.status = res.status;
           }

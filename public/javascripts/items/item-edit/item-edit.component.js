@@ -8,7 +8,7 @@ angular.
 
         this.item = Item.get({id:$routeParams.itemId},
           function success(item, resHeader) {}, 
-          function error(res) {
+          function failure(res) {
             self.error = res.data;
             self.error.status = res.status;
           }
