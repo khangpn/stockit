@@ -31,21 +31,47 @@ api.post('/',
       return res.status(400).json({msg: 'Cannot get the req.body'}); 
     }
 
+    var data = req.body;
+    var Sequelize = req.models.Sequelize;
+    var errors = [];
+    if (data['email'] == undefined) {
+      var errorItem = new Sequelize.ValidationErrorItem(
+        "The email is invalid",
+        "invalid format",
+        "email",
+        data['email']
+      );
+      errors.push(errorItem);
+    }
+    if (data['account'] == undefined) {
+      var errorItem = new Sequelize.ValidationErrorItem(
+        "The account data is invalid",
+        "invalid format",
+        "account",
+        data['account']
+      );
+      errors.push(errorItem);
+    }
+    if (errors.length != 0) {
+      var error = new Sequelize.ValidationError("The input is invalid", errors);
+      return res.status(400).json(error); 
+    }
+
     next();
   }, function(req, res, next) {
     var data = req.body;
-    data['customer']['email'] = data['email'];
+    data['account']['email'] = data['email'];
 
     // This is because of the current sequelize version error.
     // Unless we have this, it will add null to customer_id, hence raise "can not be null" error because of our model definition.
-    data['customer_id'] = 'tmp'; 
+    data['account_id'] = 'tmp'; 
 
-    delete(data['customer']['is_admin']);
-    var Customer = req.models.customer;
+    delete(data['account']['is_admin']);
+    var Account = req.models.account;
     var Customer = req.models.customer;
 
     return Customer.create(data, {
-      include: [Customer]
+      include: [Account]
     }) .then(function(customer){
       return res.json(customer); 
     }).catch ( function(error){
@@ -94,7 +120,7 @@ api.get('/:id',
       returnedCustomer.is_owner = customer.account.id == res.locals.current_account.id;
       return res.json(returnedCustomer); 
     }).catch(function(error) {
-      return next(error);
+      return res.status(400).json(error); 
     });
 });
 

@@ -39,7 +39,9 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
-          isNumeric: true
+          isNumeric: {
+            msg: "Phone number must be numeric"
+          }
         }
       },
       note: { 
