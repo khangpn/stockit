@@ -19,7 +19,7 @@ angular.
             function success(item, resHeader) {
               $location.path('/items/' + item.id);
             }, 
-            function failure(response) {
+            function failure(res) {
               self.error = res.data;
               self.error.status = res.status;
             }
