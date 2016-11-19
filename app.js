@@ -8,6 +8,7 @@ var controller = require('./lib/setup-controller');
 var model = require('./lib/setup-model');
 var token_validation = require('./lib/validate-token');
 var alter_req_body = require('./lib/alter-req-body');
+var xhr_error_handler = require('./lib/xhr-error-handler');
 
 console.log("Welcome to StockIt!");
 console.log("You are running on %s mode!", process.env.NODE_ENV);
@@ -42,6 +43,9 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
+
+// Error handler for XHR req
+app.use(xhr_error_handler);
 
 // development error handler
 // will print stacktrace

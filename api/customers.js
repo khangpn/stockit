@@ -84,17 +84,17 @@ api.get('/:id',
   }, function (req, res, next) {
     var Customer = req.models.customer;
     Customer.findById(req.params.id, {
-      include: [req.models.admin, req.models.customer]
+      include: [req.models.account]
     }).then(function(customer) {
       if (!customer) {
         return res.status(404).json({msg: "Can't find the customer with id: " + req.params.id}); 
       }
 
       var returnedCustomer = customer.toJSON();
-      returnedCustomer.is_owner = customer.id == res.locals.current_customer.id;
+      returnedCustomer.is_owner = customer.id == res.locals.current_account.id;
       return res.json(returnedCustomer); 
     }).catch(function(error) {
-      return res.status(400).json(error); 
+      return next(error);
     });
 });
 
