@@ -1,7 +1,7 @@
 div.container
   include ../../_ng_error_list.jade
   div.row(ng-show="!$ctrl.error")
-    div.col-md-10
+    div.col-md-12
       div.panel.panel-default
         div.panel-heading
           h3.panel-title Accounts List
@@ -34,17 +34,17 @@ div.container
                 tr
                   th ID
                   th Email
+                  th Fullname
                   th Is admin?
               tbody
                 tr(ng-repeat="account in $ctrl.accounts | filter:$ctrl.query | orderBy:$ctrl.orderProp")
-                  td
-                    a(href='#!/accounts/' + "{{account.id}}") {{account.id}}
+                  td(ng-if="account.is_admin")
+                    a(href='admins#!/admins/' + "{{account.admin.id}}") {{account.id}}
+                  td(ng-if="!account.is_admin")
+                    a(href='customers#!/customers/' + "{{account.customer.id}}") {{account.id}}
                   td {{account.email}}
+                  td(ng-if="account.is_admin")
+                    | {{account.admin.fullname}}
+                  td(ng-if="!account.is_admin")
+                    | {{account.customer.fullname}}
                   td {{account.is_admin | istrue}}
-    div.col-md-2
-      div.panel.panel-default
-        div.panel-body
-          div.row
-            ul
-              li
-                a(href='#!/accounts/create') Create new account
