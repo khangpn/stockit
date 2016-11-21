@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  script(src='/javascripts/admins/admin.js')
+  script(src='/javascripts/admins/admin.config.js')
+  script(src='/javascripts/admins/admin-list/admin-list.module.js')
+  script(src='/javascripts/admins/admin-list/admin-list.component.js')
+  script(src='/javascripts/admins/admin-detail/admin-detail.module.js')
+  script(src='/javascripts/admins/admin-detail/admin-detail.component.js')
+  script(src='/javascripts/admins/admin-create/admin-create.module.js')
+  script(src='/javascripts/admins/admin-create/admin-create.component.js')
+  script(src='/javascripts/admins/admin-password/admin-password.module.js')
+  script(src='/javascripts/admins/admin-password/admin-password.component.js')
+  script(src='/javascripts/admins/admin-edit/admin-edit.module.js')
+  script(src='/javascripts/admins/admin-edit/admin-edit.component.js')
+  script(src='/javascripts/admins/admin-resource/admin.module.js')
+  script(src='/javascripts/admins/admin-resource/admin.service.js')
+  script(src='/javascripts/core/istrue/istrue.filter.js')
+  script(src='/javascripts/core/delete-confirm/delete-confirm.directive.js')
+
+  div(ng-view)

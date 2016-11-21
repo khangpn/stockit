@@ -1,0 +1,12 @@
+div.container
+  ol.breadcrumb
+    li
+      a(href="#!/admins") Admins
+    li.active Create Admin
+  div.panel.panel-default
+    div.panel-heading
+      h3 Create admin
+    div.panel-body
+      include ../../_ng_error_list.jade
+      // creation form
+      include ./_form.jade

@@ -4,7 +4,7 @@ var api = express.Router();
 //------------------- Admin Section ----------------------
 api.get('/',
   function(req, res, next) {
-    if (!res.locals.authenticated && !res.locals.isAdmin) {
+    if (!res.locals.authenticated || !res.locals.isAdmin) {
       return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     next();
@@ -22,7 +22,7 @@ api.get('/',
 
 api.post('/',
   function(req, res, next) {
-    if (!res.locals.authenticated && !res.locals.isAdmin) {
+    if (!res.locals.authenticated || !res.locals.isAdmin) {
       return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     if (!req.body) {
@@ -253,7 +253,7 @@ api.post('/:id',
 api.get('/:id', 
   function(req, res, next) {
     /*TODO: Handle owner and admin scenario*/
-    if (!res.locals.authenticated && !res.locals.isAdmin) {
+    if (!res.locals.authenticated || !res.locals.isAdmin) {
       return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     next();

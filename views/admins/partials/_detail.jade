@@ -1,0 +1,48 @@
+div.container
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
+    if isAdmin
+      include ../../_delete_dialog
+    ol.breadcrumb
+      li
+        a(href="#!/admins") Admin 
+      li.active {{$ctrl.admin.account.email}}
+    div.panel.panel-default
+      div.panel-heading
+        h3.panel-title {{$ctrl.admin.account.email}}
+      div.panel-body
+        div.row
+          label.col-md-1 Email:
+          div.col-md-11
+            = "{{$ctrl.admin.account.email}}"
+        div.row
+          label.col-md-1 Fullname:
+          div.col-md-11
+            = "{{$ctrl.admin.fullname}}"
+        div.row
+          label.col-md-1 Note:
+          div.col-md-11
+            = "{{$ctrl.admin.note}}"
+        div.row
+          if isAdmin
+            div.col-sm-2
+              a.btn.btn-danger(delete-confirm,
+                object-type="accounts",
+                object-id="{{$ctrl.admin.account.id}}",
+                role="button")
+                | Delete Admin
+            div.col-sm-2
+              a.btn.btn-primary(ng-click="$ctrl.editAdmin()",
+                role="button")
+                | Edit Admin
+          if !isAdmin
+            div(ng-if="$ctrl.admin.is_owner")
+              div.col-sm-2
+                a.btn.btn-primary(ng-click="$ctrl.editAdmin()",
+                  role="button")
+                  | Edit Admin
+          div(ng-if="$ctrl.admin.is_owner")
+            div.col-sm-2
+              a.btn.btn-primary(ng-click="$ctrl.updatePassword()",
+                role="button")
+                | Update Password

@@ -1,0 +1,46 @@
+div.container
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
+    div.col-md-10
+      div.panel.panel-default
+        div.panel-heading
+          h3.panel-title Admins List
+        div.panel-body
+          div.row
+            label.col-sm-1.control-label(for='Admin_search') Search
+            div.col-sm-3
+              input(type='text',
+                name='keyword',
+                id='Admin_search',
+                placeholder='keyword',
+                ng-model="$ctrl.query")
+          div.row
+            label.col-sm-1.control-label(for='Admin_sort') Sort
+            div.col-sm-3
+              select(name='keyword',
+                id='Admin_sort',
+                ng-model="$ctrl.orderProp")
+
+                option(value="default", disabled) Order By
+                option(value="id") ID
+                option(value="fullname") Fullname
+                option(value="-id") Decending ID
+                option(value="-fullname") Decending Fullname
+          div.table-responsive
+            table.table.table-hover
+              thead
+                tr
+                  th ID
+                  th Fullname
+              tbody
+                tr(ng-repeat="admin in $ctrl.admins | filter:$ctrl.query | orderBy:$ctrl.orderProp")
+                  td
+                    a(href='#!/admins/' + "{{admin.id}}") {{admin.id}}
+                  td {{admin.fullname}}
+    div.col-md-2
+      div.panel.panel-default
+        div.panel-body
+          div.row
+            ul
+              li
+                a(href='#!/admins/create') Create new admin

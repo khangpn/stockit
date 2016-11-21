@@ -1,0 +1,14 @@
+div.container
+  ol.breadcrumb
+    li
+      a(href="#!/admins") Admin
+    li
+      a(href="#!/admins/{{$ctrl.admin.id}}") {{$ctrl.admin.account.email}}
+    li.active Edit {{$ctrl.account.email}}
+  div.panel.panel-default
+    div.panel-heading
+      h3 Edit {{$ctrl.item.code}}
+    div.panel-body
+      include ../../_ng_error_list.jade
+      // creation form
+      include ./_form.jade

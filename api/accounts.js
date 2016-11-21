@@ -22,7 +22,7 @@ api.get('/',
 //----------------- Authenticated section --------------------
 api.post('/',
   function(req, res, next) {
-    if (res.locals.authenticated && !res.locals.isAdmin) {
+    if (res.locals.authenticated || !res.locals.isAdmin) {
       return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     if (!req.body) {

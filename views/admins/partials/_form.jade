@@ -1,0 +1,47 @@
+form.form-horizontal(name="account-form", novalidate)
+  div.form-group
+    label.col-sm-2.control-label(for='admin_email') Email
+    div.col-sm-10
+      input.form-control(type='email',
+        name='email',
+        id='account["admin_email"]',
+        placeholder='Email',
+        ng-model='$ctrl.admin.account.email')
+  div(ng-if="!$ctrl.admin.id")
+    div.form-group
+      label.col-sm-2.control-label(for='account_password') Password
+      div.col-sm-10
+        input.form-control(type='password',
+          name='account[password]',
+          id='account_password',
+          placeholder='Password',
+          ng-model='$ctrl.admin.account.password')
+    div.form-group
+      label.col-sm-2.control-label(for='account_password_confirm') Confirm Password
+      div.col-sm-10
+        input.form-control(type='password',
+          name='account[password_confirm]',
+          id='account_password_confirm',
+          placeholder='Confirm Password',
+          ng-model='$ctrl.admin.account.password_confirm')
+  div.form-group
+    label.col-sm-2.control-label(for='admin_fullname') Fullname
+    div.col-sm-10
+      input.form-control(type='text',
+        name='fullname',
+        id='admin_fullname',
+        placeholder='Fullname',
+        ng-model='$ctrl.admin.fullname')
+  if isAdmin
+    div.form-group
+      label.col-sm-2.control-label(for='admin_note') Note
+      div.col-sm-10
+        textarea.form-control(
+          name='note',
+          id='Admin_note',
+          placeholder='Note',
+          ng-model='$ctrl.admin.note')
+  div.form-group
+    div.col-sm-offset-2.col-sm-10
+      input.btn.btn-default(type='submit', value='Save',
+        ng-click="$ctrl.save($ctrl.admin)")
