@@ -52,12 +52,17 @@ html
                         | Create item
               if isAdmin
                 li.dropdown
-                  a.dropdown-toggle(href="/accounts",
+                  a.dropdown-toggle(href="",
                     data-toggle="dropdown",
                     role="button",
                     aria-haspopup="true",
                     aria-expanded="false")
                     | Accounts
+                    span.caret
+                  ul.dropdown-menu
+                    li
+                      a(href="/accounts")
+                        | Accounts List
                 li.dropdown
                   a.dropdown-toggle(href="",
                     data-toggle="dropdown",

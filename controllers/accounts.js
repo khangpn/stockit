@@ -271,14 +271,21 @@ router.get('/:id', function (req, res, next) {
   var Account = req.models.account;
   Account.findById(req.params.id, {
     include: [
-      req.models.admin
+      req.models.admin,
+      req.models.customer
     ]
   }).then(function(account) {
       if (!account) return next(new Error("Can't find the account with id: " + req.params.id));
-      return res.render('view', {
-        account: account,
-        isOwner: account.id == res.locals.current_account.id
-      }); 
+      // redirect to angular detail accordings to the account type
+      if (account.is_admin) {
+        return res.redirect('/admins#!/admins/' + account.admin.id);
+      } else {
+        return res.redirect('/customers#!/customers/' + account.customer.id);
+      }
+      //return res.render('view', {
+      //  account: account,
+      //  isOwner: account.id == res.locals.current_account.id
+      //}); 
     }, 
     function(error) {
       return next(error);
