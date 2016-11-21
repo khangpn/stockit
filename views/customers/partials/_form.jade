@@ -12,7 +12,7 @@ form.form-horizontal(name="account-form", novalidate)
         id='customer_email',
         placeholder='Email',
         ng-model='$ctrl.customer.email')
-  div(ng-if="!$ctrl.customer")
+  div(ng-if="!$ctrl.customer.id")
     div.form-group
       label.col-sm-2.control-label(for='account_password') Password
       div.col-sm-10
