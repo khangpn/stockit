@@ -48,7 +48,7 @@ html
                       | Items list
                   if isAdmin
                     li
-                      a(href="/items/create")
+                      a(href="/items#!/items/create")
                         | Create item
               if isAdmin
                 li.dropdown
@@ -76,7 +76,7 @@ html
                       a(href="/customers")
                         | Customers List
                     li
-                      a(href="/accounts/create")
+                      a(href="/customers#!/customers/create")
                         | Create Customer
                 li.dropdown
                   a.dropdown-toggle(href="",
@@ -91,7 +91,7 @@ html
                       a(href="/admins")
                         | Admin List
                     li
-                      a(href="/accounts/admin/create")
+                      a(href="/admins#!/admins/create")
                         | Create Admin
                 li.dropdown
                   a.dropdown-toggle(href="",
@@ -106,7 +106,7 @@ html
                       a(href="/orders")
                         | Orders List
                     li
-                      a(href="/orders/create")
+                      a(href="/orders#!/orders/create")
                         | Create Order
           ul.nav.navbar-nav.navbar-right
             if authenticated
@@ -130,7 +130,7 @@ html
                 a(href="/login")
                   | Log in
               li
-                a(href="/accounts/create")
+                a(href="/customers#!/customers/create")
                   | Register
     div.container
       if notification
