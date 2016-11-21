@@ -17,6 +17,9 @@ angular.
         when('/customers/:customerId/edit', {
           template: '<customer-edit></customer-edit>'
         }).
+        when('/customers/:customerId/password/update', {
+          template: '<customer-password></customer-password>'
+        }).
         otherwise('/customers');
     }
   ])

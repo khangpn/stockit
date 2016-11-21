@@ -24,7 +24,7 @@ api.get('/',
 //----------------- Authenticated section --------------------
 api.post('/',
   function(req, res, next) {
-    if (res.locals.authenticated && !res.locals.isAdmin) {
+    if (res.locals.authenticated || !res.locals.isAdmin) {
       return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     if (!req.body) {
@@ -126,7 +126,7 @@ api.get('/:id',
 
 api.post('/:id',
   function(req, res, next) {
-    if (!res.locals.isAdmin) {
+    if (!res.locals.authenticated || res.locals.current_account.id != parseInt(req.params.id)) {
       return res.status(401).json({msg: 'You are not permitted to access this!'}); 
     }
     if (!req.body) {
@@ -138,7 +138,7 @@ api.post('/:id',
     var Customer = req.models.customer;
     Customer.findById(data.id).then(function(customer) {
         if (!customer) {
-          return res.status(404).json({msg: "Can't find the item with id: " + data.id}); 
+          return res.status(404).json({msg: "Can't find the customer with id: " + data.id}); 
         }
 
       customer.update(data).then(function(customer){
@@ -148,6 +148,56 @@ api.post('/:id',
       });
     }).catch( function(error){
       return res.status(400).json(error); 
+    });
+  }
+);
+
+api.post('/:id/password/update',
+  function(req, res, next) {
+    if (!res.locals.authenticated) {
+      return res.status(401).json({msg: 'You are not permitted to access this!'}); 
+    }
+    if (!req.body) {
+      return res.status(400).json({msg: 'Cannot get the req.body'}); 
+    }
+    var data = req.body;
+    if (!data.account.old_password) {
+      return res.status(400).json({msg: 'Old password must not be empty'}); 
+    }
+
+    var Customer = req.models.customer;
+    return Customer.findById(data.id).then(function(customer) {
+      if (!customer) {
+        return res.status(404).json({msg: "Can't find the item with id: " + data.id}); 
+      }
+      if (customer.account_id != res.locals.current_account.id) {
+        return res.status(401).json({msg: 'You are not permitted to access this!'}); 
+      }
+      res.locals.current_customer = customer;
+      return next();
+    }).catch( function(error){
+      return res.status(400).json(error); 
+    });
+  }, function(req, res, next) {
+    var data = req.body;
+    var accountData = data.account;
+    var account = res.locals.current_account;
+
+    account.checkPasswordMatch(accountData.old_password, function(error, matched){
+      if (error) return next(error);
+
+      if (matched) {
+        account.set('password', accountData.password);
+        account.set('password_confirm', accountData.password_confirm);
+        account.save()
+          .then(function(updatedAcc){
+            return res.json(res.locals.current_customer); 
+          }).catch( function(error){
+            return res.status(400).json(error); 
+          });
+      } else {
+        return res.status(401).json({msg: 'Your old password is incorrect!'}); 
+      }
     });
   }
 );

@@ -1,12 +1,14 @@
 angular.
-  module('customerEdit').
-  component('customerEdit', { 
-    templateUrl: '/customers/partials/edit',
+  module('customerPassword').
+  component('customerPassword', { 
+    templateUrl: '/customers/partials/update_password',
     controller: ['$routeParams', '$location', 'Customer',
-      function CustomerEditController($routeParams, $location, Customer) {
+      function CustomerPasswordUpdateController($routeParams, $location, Customer) {
         var self = this;
         this.customer = Customer.get({id:$routeParams.customerId},
-          function success(customer, resHeader) {}, 
+          function success(customer, resHeader) {
+            customer.account.password = '';
+          }, 
           function failure(res) {
             self.error = res.data;
             self.error.status = res.status;
@@ -14,7 +16,7 @@ angular.
         );
 
         this.save = function(customer) {
-          customer.$save(
+          Customer.updatePassword({id:customer.id}, customer,
             function success(customer, resHeader) {
               $location.path('/customers/' + customer.id);
             }, 

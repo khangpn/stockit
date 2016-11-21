@@ -3,6 +3,7 @@ angular.module("customer", ["ngRoute",
 "customerDetail", 
 "customerCreate", 
 "customerEdit", 
+"customerPassword", 
 "core", 
 "customerResource"]);
 

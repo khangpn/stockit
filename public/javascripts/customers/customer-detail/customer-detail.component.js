@@ -16,6 +16,10 @@ angular.
         this.editCustomer = function() {
           $location.path('/customers/'+this.customer.id+'/edit');
         };
+
+        this.updatePassword = function() {
+          $location.path('/customers/'+this.customer.id+'/password/update');
+        };
       }
     ]
   });
