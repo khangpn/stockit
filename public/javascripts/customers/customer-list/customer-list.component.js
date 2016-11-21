@@ -11,7 +11,6 @@ angular.
           function failure(res) {
             self.error = res.data;
             self.error.status = res.status;
-            console.log(self.error);
           }
         );
       }
