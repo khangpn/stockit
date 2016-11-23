@@ -1,0 +1,48 @@
+div.container
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
+    include ../../_delete_dialog
+    ol.breadcrumb
+      li
+        a(href="#!/stocks") Stocks
+      li.active Detail
+    div.panel.panel-default
+      div.panel-heading
+        h3.panel-title Stock Info
+      div.panel-body
+        div.row
+          label.col-md-1 ID:
+          div.col-md-11
+            = "{{$ctrl.stock.id}}"
+        div.row
+          label.col-md-1 Total price:
+          div.col-md-11
+            = "{{$ctrl.stock.total_price}}"
+        div.row
+          label.col-md-1 Note:
+          div.col-md-11
+            = "{{$ctrl.stock.note}}"
+        div.row
+          label.col-md-1 Created:
+          div.col-md-4
+            = "{{$ctrl.stock.created_at}}"
+          label.col-md-1 Updated:
+          div.col-md-4
+            = "{{$ctrl.stock.updated_at}}"
+        div.row
+          label.col-md-1 Seller:
+          div.col-md-11
+            a(href='/sellers#!/sellers/' + "{{$ctrl.stock.seller_id}}")="{{$ctrl.stock.seller.fullname}}"
+        if isAdmin
+          div.row
+            div.col-sm-2
+              a.btn.btn-danger(delete-confirm,
+                object-type="stocks",
+                object-id="{{$ctrl.stock.id}}",
+                role="button")
+                | Delete Stock
+            div.col-sm-2
+              a.btn.btn-primary(ng-click="$ctrl.editStock()",
+                role="button")
+                | Edit Stock
+    include ./_stock_details.jade

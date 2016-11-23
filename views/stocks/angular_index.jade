@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  script(src='/javascripts/stocks/stock.js')
+  script(src='/javascripts/stocks/stock.config.js')
+  script(src='/javascripts/stocks/stock-list/stock-list.module.js')
+  script(src='/javascripts/stocks/stock-list/stock-list.component.js')
+  script(src='/javascripts/stocks/stock-detail/stock-detail.module.js')
+  script(src='/javascripts/stocks/stock-detail/stock-detail.component.js')
+  script(src='/javascripts/stocks/stock-create/stock-create.module.js')
+  script(src='/javascripts/stocks/stock-create/stock-create.component.js')
+  script(src='/javascripts/stocks/stock-edit/stock-edit.module.js')
+  script(src='/javascripts/stocks/stock-edit/stock-edit.component.js')
+  script(src='/javascripts/stocks/stock-resource/stock.module.js')
+  script(src='/javascripts/stocks/stock-resource/stock.service.js')
+  script(src='/javascripts/core/instock/instock.filter.js')
+  script(src='/javascripts/core/delete-confirm/delete-confirm.directive.js')
+
+  div(ng-view)
+

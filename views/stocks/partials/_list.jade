@@ -1,0 +1,52 @@
+div.container
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
+    div.col-md-10
+      div.panel.panel-default
+        div.panel-heading
+          h3.panel-title Stocks List
+        div.panel-body
+          div.row
+            label.col-sm-1.control-label(for='Stock_search') Search
+            div.col-sm-3
+              input(type='text',
+                name='keyword',
+                id='Stock_search',
+                placeholder='keyword',
+                ng-model="$ctrl.query")
+          div.row
+            label.col-sm-1.control-label(for='Stock_sort') Sort
+            div.col-sm-3
+              select(name='keyword',
+                id='Stock_sort',
+                ng-model="$ctrl.orderProp")
+                option(value="default", disabled) Order By
+                option(value="id") ID
+                option(value="price") Price
+                option(value="date") Date
+                option(value="-id") Decending ID
+                option(value="-total_price") Decending Price
+                option(value="-date") Decending Date
+          div.table-responsive
+            table.table.table-hover
+              thead
+                tr
+                  th ID
+                  th Total Price
+                  th Seller
+                  th Creating Date
+              tbody
+                tr(ng-repeat="stock in $ctrl.stocks | filter:$ctrl.query | orderBy:$ctrl.stockProp")
+                  td
+                    a(href='#!/stocks/' + "{{stock.id}}") {{stock.id}}
+                  td {{stock.total_price}}
+                  td 
+                    a(href='/sellers#!/sellers/' + "{{stock.seller_id}}")="{{stock.seller.fullname}}"
+                  td {{stock.created_at}}
+    div.col-md-2
+      div.panel.panel-default
+        div.panel-body
+          div.row
+            ul
+              li
+                a(href='#!/stocks/create') Create new stock

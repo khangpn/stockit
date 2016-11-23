@@ -1,0 +1,57 @@
+form.form-horizontal(name="stock-form", novalidate)
+  div(ng-if="$ctrl.stock.id")
+    input.form-control(type='hidden',
+      id='stock_id',
+      ng-model='$ctrl.stock.id')
+  div.form-group
+    label.col-sm-2.control-label(for='Stock_seller_id') Seller
+    div.col-sm-4
+      input.form-control(type='text',
+        id='Stock_seller_name',
+        placeholder='Seller ID',
+        ng-model='$ctrl.stock.seller_id')
+  div(ng-repeat="entry in $ctrl.stock.stock_details")
+    div.form-group
+      label.col-sm-2.control-label(for='StockDetail_name') Item {{$index+1}}
+      div.col-sm-3
+        input.form-control(type='text',
+          id='StockDetail_name',
+          placeholder='Item Code',
+          ng-model='entry.item_code')
+      div.col-sm-1
+        input.form-control(type='number',
+          id='StockDetail_quantity',
+          placeholder='Quantity',
+          ng-model='entry.quantity')
+      div.col-sm-5
+        textarea.form-control(
+          id='StockDetail_note',
+          placeholder='Note',
+          ng-model='entry.note')
+      div.col-sm-1
+        button.btn.btn-default(
+          type="button", 
+          aria-label="Left Align",
+          ng-click="$ctrl.removeItem(entry)"
+        )
+          span.glyphicon.glyphicon-minus(aria-hidden="true")
+  div.form-group
+    div.col-sm-2
+    div.col-sm-4
+      button.btn.btn-default(
+        type="button", 
+        aria-label="Left Align",
+        ng-click="$ctrl.addItem()"
+      )
+        span.glyphicon.glyphicon-plus(aria-hidden="true")
+  div.form-group
+    label.col-sm-2.control-label(for='Stock_note') Note
+    div.col-sm-10
+      textarea.form-control(
+        id='Stock_note',
+        placeholder='Note',
+        ng-model='$ctrl.stock.note')
+  div.form-group
+    div.col-sm-offset-2.col-sm-10
+      input.btn.btn-default(type='submit', value='Save',
+        ng-click="$ctrl.save($ctrl.stock)")

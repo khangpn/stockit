@@ -1,0 +1,24 @@
+div.container
+  ol.breadcrumb
+    li
+      a(href="#!/stocks") Stocks
+    li
+      a(href="#!/stocks/{{$ctrl.stock.id}}") {{$ctrl.stock.id}}
+    li.active Edit
+  div.panel.panel-default
+    div.panel-heading
+      h3 Edit Stock
+    div.panel-body
+      include ../../_ng_error_list.jade
+      form.form-horizontal(name="stock-form", novalidate)
+        div.form-group
+          label.col-sm-2.control-label(for='Stock_note') Note
+          div.col-sm-10
+            textarea.form-control(
+              id='Stock_note',
+              placeholder='Note',
+              ng-model='$ctrl.stock.note')
+        div.form-group
+          div.col-sm-offset-2.col-sm-10
+            input.btn.btn-default(type='submit', value='Save',
+              ng-click="$ctrl.save($ctrl.stock)")
