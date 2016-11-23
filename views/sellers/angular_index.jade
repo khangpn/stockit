@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  script(src='/javascripts/sellers/seller.js')
+  script(src='/javascripts/sellers/seller.config.js')
+  script(src='/javascripts/sellers/seller-list/seller-list.module.js')
+  script(src='/javascripts/sellers/seller-list/seller-list.component.js')
+  script(src='/javascripts/sellers/seller-create/seller-create.module.js')
+  script(src='/javascripts/sellers/seller-create/seller-create.component.js')
+  script(src='/javascripts/sellers/seller-detail/seller-detail.module.js')
+  script(src='/javascripts/sellers/seller-detail/seller-detail.component.js')
+  script(src='/javascripts/sellers/seller-edit/seller-edit.module.js')
+  script(src='/javascripts/sellers/seller-edit/seller-edit.component.js')
+  script(src='/javascripts/sellers/seller-resource/seller.module.js')
+  script(src='/javascripts/sellers/seller-resource/seller.service.js')
+  script(src='/javascripts/core/instock/instock.filter.js')
+  script(src='/javascripts/core/delete-confirm/delete-confirm.directive.js')
+
+  div(ng-view)

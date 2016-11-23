@@ -1,0 +1,14 @@
+div.container
+  ol.breadcrumb
+    li
+      a(href="#!/sellers") Sellers
+    li
+      a(href="#!/sellers/{{$ctrl.seller.id}}") {{$ctrl.seller.email}}
+    li.active Edit 
+  div.panel.panel-default
+    div.panel-heading
+      h3 Edit {{$ctrl.seller.fullname}} info
+    div.panel-body
+      include ../../_ng_error_list.jade
+      // creation form
+      include ./_form.jade

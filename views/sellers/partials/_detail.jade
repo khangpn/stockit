@@ -1,0 +1,51 @@
+div.container
+  include ../../_ng_error_list.jade
+  div.row(ng-show="!$ctrl.error")
+    if isAdmin
+      include ../../_delete_dialog
+    ol.breadcrumb
+      li
+        a(href="#!/sellers") Sellers
+      li.active Detail
+    div.panel.panel-default
+      div.panel-heading
+        h3.panel-title {{$ctrl.seller.fullname}}
+      div.panel-body
+        div.row
+          label.col-md-1 Email:
+          div.col-md-11
+            = "{{$ctrl.seller.email}}"
+        div.row
+          label.col-md-1 Phone:
+          div.col-md-11
+            = "{{$ctrl.seller.phone}}"
+        div.row
+          label.col-md-1 Address:
+          div.col-md-11
+            = "{{$ctrl.seller.address}}"
+        div.row
+          label.col-md-1 Website:
+          div.col-md-11
+            = "{{$ctrl.seller.website}}"
+        div.row
+          label.col-md-1 Description:
+          div.col-md-11
+            = "{{$ctrl.seller.description}}"
+        if isAdmin
+          div.row
+            label.col-md-1 Note:
+            div.col-md-11
+              = "{{$ctrl.seller.note}}"
+          div.row
+            div.col-sm-2
+              //a.btn.btn-danger(ng-click="$ctrl.deleteSeller()",
+              //  role="button")
+              a.btn.btn-danger(delete-confirm,
+                object-type="sellers",
+                object-id="{{$ctrl.seller.id}}",
+                role="button")
+                | Delete Seller
+            div.col-sm-2
+              a.btn.btn-primary(ng-click="$ctrl.editSeller()",
+                role="button")
+                | Edit Seller
